@@ -64,3 +64,4 @@ typings/
 .metadata
 .vscode
 e2e
+dist
