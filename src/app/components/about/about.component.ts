@@ -1,15 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 
+interface Font {
+  title: string;
+  usage: string;
+  style: string;
+}
+
+interface Feature {
+  title: string;
+}
+
 @Component({
   selector: 'app-about',
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss']
 })
 export class AboutComponent implements OnInit {
-  version_number: Number = 0.1;
-  creation_date: String = '24.03.2018';
-  last_update: String = '24.03.2018';
-  features = [
+  public versionNumber = 0.2 as number;
+  public creationDate = '24.03.2018' as string;
+  public lastUpdate = '24.03.2018' as string;
+  public features = [
     {
       title: 'Angular (7) with SCSS'
     },
@@ -31,9 +41,9 @@ export class AboutComponent implements OnInit {
     {
       title: 'redux-store'
     }
-  ];
+  ] as Feature[];
 
-  fonts = [
+  public fonts = [
     {
       title: 'AppleSansAdjectives',
       style: 'applesans',
@@ -64,7 +74,7 @@ export class AboutComponent implements OnInit {
       style: 'saros',
       usage: 'Clear simple font'
     }
-  ];
+  ] as Font[];
 
   constructor() {}
 
