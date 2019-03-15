@@ -1,0 +1,219 @@
+.footer-basic-centered{
+	background-color: rgba($primary-color, 1);
+	box-sizing: border-box;
+	text-align: center;
+  font-family: $open-sans;
+  font-size: $fs-normal;
+  width: 98.4%;
+  position: absolute;
+  display:block;
+  transform: translate(-50%, 0);
+  padding: 45px;
+  left: 50%;
+	margin-top: 80px;
+}
+
+.fa-arrow-circle-up:hover {
+  transition: font-size 0.35s ease;
+  font-size: 5em;
+}
+
+.wrapper {
+  position: relative;
+}
+
+footer i div {
+  display: inline-block;
+  top: -500px;
+  left: 50%;
+}
+
+.ovalSpeechbubble {
+  position: absolute;
+
+  width:390px;
+  height:355px;
+  margin:2em auto 10px;
+  color:$secondary-color;
+  background:rgba($highlight-color, 1);
+
+  -webkit-border-top-left-radius:390px 355px;
+  -webkit-border-top-right-radius:390px 355px;
+  -webkit-border-bottom-right-radius:390px 355px;
+  -webkit-border-bottom-left-radius:390px 355px;
+
+  /* compatibility reasons..duh */
+  border-top-left-radius:390px 355px;
+  border-top-right-radius:390px 355px;
+  border-bottom-right-radius:390px 355px;
+  border-bottom-left-radius:390px 355px;
+
+  -moz-border-radius:390px / 355px;
+  border-radius:390px / 355px;
+}
+
+/* creates opening quotation mark */
+.ovalSpeechbubble:before {
+  content:"\201C";
+  position:relative;
+  z-index:1;
+  top:0px;
+  left:-180px;
+  font:80px/1 Georgia, serif;
+  color: rgba($highlight-color, 1);
+}
+
+/* creates closing quotation mark */
+.ovalSpeechbubble:after {
+  content:"\201D";
+  position:relative;
+  z-index:1;
+  right:-160px;
+  font:80px/0.25 Georgia, serif;
+  color: rgba($secondary-color, 1);
+}
+
+.ovalSpeechbubble p {
+  width:250px;
+  height:250px;
+  margin:0 auto;
+  text-align:center;
+  font-family: $inkferno;
+  font-size:40px;
+}
+
+/* creates smaller curve */
+.ovalSpeechbubble p:before {
+  content:"";
+  position:relative;
+  z-index:-1;
+  bottom:0px;
+  right:55%;
+  width:180px; /* wider than necessary to make it look a bit better in IE8 */
+  height:0px;
+  background:rgba($highlight-color, 1); /* need this for webkit - bug in handling of border-radius */
+
+  /* css3 */
+  -webkit-border-bottom-right-radius:40px 50px;
+  -moz-border-radius-bottomright:40px 50px;
+  border-bottom-right-radius:40px 50px;
+  /* using translate to avoid undesired appearance in CSS2.1-capabable but CSS3-incapable browsers */
+  -webkit-transform:translate(-30px, -2px);
+  -moz-transform:translate(-30px, -2px);
+  -ms-transform:translate(-30px, -2px);
+  -o-transform:translate(-30px, -2px);
+  transform:translate(-30px, -2px);
+}
+
+/* creates larger curve */
+.ovalSpeechbubble p:after {
+  content:"back to top";
+  font-size:0.39em;
+  line-height: 140px;
+  font-weight: bold;
+  color: $secondary-color;
+  min-width: 85px;
+  position:relative;
+  z-index:0;
+  bottom:0px;
+  top:15px;
+  right:0px;
+  height:80px;
+  border-right:150px solid rgba($highlight-color, 0);
+  background:rgba($highlight-color, 1); /* need this for webkit - bug in handling of border-radius */
+  /* css3 */
+  -webkit-border-bottom-right-radius:180px 100px;
+  -moz-border-radius-bottomright:180px 100px;
+  border-bottom-right-radius:180px 100px;
+  /* using translate to avoid undesired appearance in CSS2.1-capabable but CSS3-incapable browsers */
+  -webkit-transform:translate(0, -2px);
+  -moz-transform:translate(0, -2px);
+  -ms-transform:translate(0, -2px);
+  -o-transform:translate(0, -2px);
+  transform:translate(0, -2px);
+  /* reduce the damage in FF3.0 */
+  display:block;
+  width:0;
+}
+
+.ovalSpeechbubble + p {
+  position:relative; /* part of the IE8 width compromise */
+  width:150px;
+  margin:0 0 2em;
+  font-size:18px;
+  font-weight:bold;
+}
+
+
+.footer-basic-centered .footer-company-motto{
+	color:  $secondary-color;
+  font-size: 2em;
+  font-family: $love;
+	margin: 0;
+}
+
+.footer-basic-centered p a {
+  color: $secondary-color;
+  -o-transition:.5s;
+  -ms-transition:.5s;
+  -moz-transition:.5s;
+  -webkit-transition:.5s;
+  transition:.5s;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.footer-basic-centered p a:hover {
+  color: $secondary-color;
+  text-decoration: underline;
+}
+
+.footer-links a:hover {
+  color: $secondary-color;
+  text-decoration: underline;
+}
+
+.footer-basic-centered .footer-company-name{
+	color:  $secondary-color;
+	margin: 0;
+}
+
+.footer-basic-centered .footer-links{
+	list-style: none;
+	font-weight: bold;
+	color:  $secondary-color;
+	padding: 35px 0 23px;
+	margin: 0;
+}
+
+.footer-basic-centered .footer-links a{
+	display:inline-block;
+	text-decoration: none;
+	color: inherit;
+}
+
+@media (max-width: 600px) {
+
+	.footer-basic-centered{
+		padding: 35px;
+	}
+
+	.footer-basic-centered .footer-company-motto{
+		font-size: 18px;
+	}
+
+	.footer-basic-centered .footer-company-name{
+		font-size: 12px;
+	}
+
+	.footer-basic-centered .footer-links{
+		font-size: 14px;
+		padding: 25px 0 20px;
+	}
+
+	.footer-basic-centered .footer-links a{
+		line-height: 1.8;
+	}
+}

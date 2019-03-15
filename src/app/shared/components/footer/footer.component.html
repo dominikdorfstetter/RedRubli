@@ -1,0 +1,24 @@
+<footer class="footer-basic-centered">
+  <div class="wrapper">
+    <i id="toTheTop" style="color:white;" class="fas fa-arrow-circle-up fa-5x">
+      <div class="ovalSpeechbubble" [style.display]="showBubble ? 'block' : 'none'" id="ovalquote" ng-show="topHover">
+        <p>The beginning is the most important part of the work. Plato</p>
+      </div>
+    </i>
+  </div>
+  <br><br>
+  <p class="footer-company-motto">because I.T. can make you happy</p>
+  <br>
+  <i class="far fa-heart fa-5x" style="color:#ffffff"></i>
+  <p class="footer-links">
+    <a [routerLink]="['start']" (click)="backToTop()">Start</a>
+    |
+    <a [routerLink]="['demo']" (click)="backToTop()">Demo</a>
+    |
+    <a [routerLink]="['about']" (click)="backToTop()">About</a>
+    |
+    <a [routerLink]="['impressum']" (click)="backToTop()">Impressum</a>
+  </p>
+
+  <p class="footer-company-name"><a href='https://dopaminsoftware.com' target="_blank">dopaminsoftware</a>&nbsp;<i class="far fa-copyright fa-xs" style="color: white;"></i> 2018</p>
+</footer>

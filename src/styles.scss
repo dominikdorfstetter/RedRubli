@@ -1,0 +1,143 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import './assets/scss/imports.scss';
+/* Allgemein für komplette Site gilt */
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.highlighted {
+    font-size: 1.2em;
+}
+
+.mat-toolbar.mat-primary {
+    background: $secondary-color;
+    color: $primary-color;
+    height: 100%;
+    width: 100%;
+    border: 2px solid $primary-color;
+    border-top: 0;
+}
+
+/* all content elements */
+
+.content {
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
+
+/* top navigation menu */
+
+#topnavigation {
+    height: 100px;
+    width: 98.4%;
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    #logo {
+        width: 70px;
+        height: 70px;
+        background-image: url('./assets/company/logo/dopaminsoftware.png');
+        background-size: cover;
+    }
+}
+
+.divider {
+    height: auto;
+    margin-left: 5px;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.button_row {
+    list-style-type: none;
+    overflow: hidden;
+    position: absolute;
+    min-width: 490px;
+    top: 50%;
+    transform: translate(0%, -50%);
+    margin: auto;
+    right: 20px;
+    li {
+        float: left;
+        button {
+            color: $primary-color;
+            font-weight: 300;
+            width: 160px;
+            height: 70px;
+            font-family: $cities-typeface;
+            font-size: $fs-normal;
+            -o-transition: .5s;
+            -ms-transition: .5s;
+            -moz-transition: .5s;
+            -webkit-transition: .5s;
+            transition: .5s;
+            &:hover {
+                background-color: $primary-color;
+                color: $secondary-color;
+            }
+        }
+        .mat-button {
+            margin-left: 10px;
+            margin-right: 10px;
+            &.active {
+                background-color: $primary-color;
+                color: $secondary-color;
+                font-weight: 900;
+            }
+        }
+    }
+}
+
+.app_title {
+    margin-left: 25px;
+    margin-right: 50px;
+    font-family: $ff-headline-alt;
+    font-size: $fs-highlighted;
+}
+
+body {
+    font-family: $ff-primary;
+    font-size: $fs-normal;
+    hr {
+        color: $primary-color;
+        background: $primary-color;
+        width: 99%;
+        height: 2px;
+        border-radius: 4px;
+    }
+    .nopoint {
+        list-style-type: none;
+        margin: 0;
+        margin-left: -40px;
+        padding: 0;
+    }
+    .main {
+        margin-top: 130px;
+        min-height: 70vh;
+        text-align: center;
+        h1 {
+            color: $primary-color;
+            font-family: $ff-headline;
+            font-size: $fs-biggest;
+        }
+        h2 {
+            color: $primary-color;
+            font-family: $ff-headline;
+            font-size: $fs-big;
+            margin-top: 40px;
+        }
+        &:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    }
+}

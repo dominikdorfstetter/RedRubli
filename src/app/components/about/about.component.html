@@ -1,0 +1,22 @@
+<h1>Starter Template Angular</h1>
+<h2>Details</h2>
+<p>made on - {{ creation_date }}</p>
+<p>last update - 15.03.2019</p>
+<p>Dominik Dorfstetter</p>
+<p class="versionnumber">version number {{ version_number }}</p>
+<p>last updated {{ last_update }}</p>
+<hr />
+<h2>Features</h2>
+<ul *ngFor="let feature of features">
+  <li class="nopoint">{{ feature.title }}</li>
+</ul>
+<hr />
+<h2>Fonts</h2>
+<ul *ngFor="let font of fonts">
+  <li class="nopoint">
+    <div style="display:inline-block;" class="{{ font.style }} highlighted">
+      {{ font.title }}
+    </div>
+    <div style="display:inline-block;">&nbsp;- {{ font.usage }}</div>
+  </li>
+</ul>

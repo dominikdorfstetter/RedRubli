@@ -1,0 +1,16 @@
+/* dopaminsoftware style_template */
+@import '_fonts';
+@import '_mixins';
+@import './assets/scss/vars.scss';
+
+/* Example Styles */
+@import 'examples';
+
+/* Third party */
+@import './assets/scss/fontawesome/css/fontawesome-all.min.css';
+@import './assets/scss/primeng/themes/bootstrap/theme.css';
+@import './assets/scss/primeng/primeng.min.css';
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+/* Component styles */
+@import './assets/scss/footer';

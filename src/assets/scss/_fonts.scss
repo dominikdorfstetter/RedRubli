@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css?family=Anton|Lato|Open+Sans|Roboto|PT+Serif|Open+Sans+Condensed:300');
+
+@font-face {
+  font-family: 'AppleSansAdjectives';
+  src: url('/assets/fonts/AppleSansAdjectives/AppleSansAdjectives.eot'); /* IE9 Compat Modes */
+  src: url('/assets/fonts/AppleSansAdjectives/AppleSansAdjectives.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('/assets/fonts/AppleSansAdjectives/AppleSansAdjectives.woff') format('woff'), /* Modern Browsers */
+  url('/assets/fonts/AppleSansAdjectives/AppleSansAdjectives.ttf') format('truetype'), /* Safari, Android, iOS */
+  url('/assets/fonts/AppleSansAdjectives/AppleSansAdjectives.svg') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: 'Cities_Typeface';
+  src: url('/assets/fonts/Cities_Typeface/Cities_Typeface.otf') format('opentype'); /* Modern Browsers */
+  src: url('/assets/fonts/Cities_Typeface/Cities_Typeface.ttf') format('truetype'); /* Safari, Android, iOS */
+}
+
+@font-face {
+  font-family: 'Inkferno';
+  src: url('/assets/fonts/Inkfrano/INKFERNO.otf') format('opentype'); /* Modern Browsers */
+  src: url('/assets/fonts/Inkfrano/INKFERNO.ttf') format('truetype'); /* Safari, Android, iOS */
+}
+
+@font-face {
+  font-family: 'LOVE';
+  src: url('/assets/fonts/LOVE/LOVERegular.eot'); /* IE9 Compat Modes */
+  src: url('/assets/fonts/LOVE/LOVERegular.woff') format('woff'), /* Modern Browsers */
+  url('/assets/fonts/LOVE/LOVERegular.woff2') format('woff2');  /* Modern Browsers, better compression */
+}
+
+@font-face {
+  font-family: 'Saros';
+  src: url('/assets/fonts/Saros/Saros-Regular.otf') format('opentype'); /* Modern Browsers */
+  src: url('/assets/fonts/Saros/Saros-Regular.ttf') format('truetype'); /* Safari, Android, iOS */
+}
+
+// Font Variables
+$roboto-slab: 'Roboto', sans-serif;
+$open-sans: 'Open Sans', sans-serif;
+$pt-serif: 'PT Serif', serif;
+$lato: 'Lato', sans-serif;
+$open-sans-condensed: 'Open Sans Condensed', serif;
+$anton: 'Anton', serif;
+$saros: 'Saros', serif;
+$love: 'LOVE', sans-serif;
+$inkferno: 'Inkferno', sans-serif;
+$cities-typeface: 'Cities_Typeface', sans-serif;
+$applesansadjectives: 'AppleSansAdjectives', serif;

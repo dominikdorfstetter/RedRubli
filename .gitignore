@@ -59,3 +59,8 @@ typings/
 
 # next.js build output
 .next
+
+# stuff
+.metadata
+.vscode
+e2e
