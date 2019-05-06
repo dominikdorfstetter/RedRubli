@@ -83,11 +83,11 @@ footer i div {
 
 }
 
-@-moz-document url-prefix() {
+/*@-moz-document url-prefix() {
   .ovalSpeechbubble p {
     margin-top: -35px;
   }
-}
+}*/
 
 /* creates smaller curve */
 .ovalSpeechbubble p:before {
