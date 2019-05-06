@@ -80,6 +80,13 @@ footer i div {
   text-align:center;
   font-family: $inkferno;
   font-size:40px;
+
+}
+
+@-moz-document url-prefix() {
+  .ovalSpeechbubble p {
+    margin-top: -35px;
+  }
 }
 
 /* creates smaller curve */
