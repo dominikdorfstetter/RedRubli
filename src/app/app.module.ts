@@ -9,7 +9,6 @@ import { NgModule } from '@angular/core';
 import { environment } from '../environments/environment';
 
 /* component Libraries */
-import { PrimeNgModule } from './shared/modules/primeng.module';
 import { MaterialModule } from './shared/modules/material.module';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -23,12 +22,6 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { DemoComponent } from './components/demo/demo.component';
 import { StartComponent } from './components/start/start.component';
-
-/* NgRx store */
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import * as reducers from './shared/reducers/example-reducer';
 
 /* Multi Touch Support */
 import 'hammerjs';
@@ -48,12 +41,6 @@ import 'hammerjs';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    PrimeNgModule,
-    StoreModule.forRoot(reducers),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25, // Retains last 25 states
-      logOnly: environment.production // Restrict extension to log-only mode
-    }),
     MaterialModule
   ],
   providers: [],
