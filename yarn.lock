@@ -316,21 +316,6 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@ngrx/effects@^8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-8.0.0.tgz#56da399423c2d8c690d9f38971f5fd4234ee8bb2"
-  integrity sha512-8ho26Cq1Kh+mrIhoq5fHmXYXdyeng8vabVJ+9GooFJBCNGNuE43nfFWH6x9ksXOpA075iGE5SMPEw6KceTX2eg==
-
-"@ngrx/store-devtools@^8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@ngrx/store-devtools/-/store-devtools-8.0.0.tgz#bb8e736e20183ea4d75acc588b14fb40ccf3e85c"
-  integrity sha512-T2yWwoE7agTjvSGQNMkANrbBUMjTtnNUw2v0TC6Ms3Rp8Gdhrgjh0n3bve401P+FeQ1EBygnk7LTCaQ5H/MP0g==
-
-"@ngrx/store@^8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-8.0.0.tgz#f9b37a133c2cdf96e5f1da850f873ec62b642113"
-  integrity sha512-FpffcUV50Pd3X+xwswEvMDABr+OfbkPCBmD3tU9we6vVqMTIYSW0YyNtQUtblPbzIhb+pH8HV3YuGdFA+zQMYw==
-
 "@ngtools/webpack@8.0.2":
   version "8.0.2"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-8.0.2.tgz#d60167b514b531ed6ae308b4911739dd102e41c7"
