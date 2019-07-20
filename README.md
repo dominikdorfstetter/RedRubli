@@ -1,5 +1,6 @@
 # RedRubli
 
-An Angular 2+ template I built.
+An Angular (8) template I built.
 
-## Features
+## Screenshot
+![screenshot](https://github.com/dominikdorfstetter/RedRubli/blob/master/screenshot.png)
