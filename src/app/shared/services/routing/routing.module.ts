@@ -9,10 +9,10 @@ import { AboutComponent } from '../../../components/about/about.component';
 
 
 const routes: Routes = [
-  { path: 'home', component: StartComponent},
-  { path: 'impressum', component: ImpressumComponent},
-  { path: 'demo', component: DemoComponent},
-  { path: 'about', component: AboutComponent},
+  { path: 'home', component: StartComponent, pathMatch: 'full'},
+  { path: 'impressum', component: ImpressumComponent, pathMatch: 'full'},
+  { path: 'demo', component: DemoComponent, pathMatch: 'full'},
+  { path: 'about', component: AboutComponent, pathMatch: 'full'},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
