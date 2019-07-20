@@ -2,8 +2,11 @@
   <mat-toolbar color="primary">
     <mat-toolbar-row style="min-height:100%;">
       <span class="app_title">Red Rübli</span>
+      <mat-menu class="burger_menu" #menu="matMenu">
+        <div>TEst</div>
+      </mat-menu>
       <ul class="button_row">
-        <li><button mat-button [routerLinkActive]="['active']" [routerLink]="['start']">Start</button>|</li>
+        <li><button mat-button [routerLinkActive]="['active']" [routerLink]="['home']">Start</button>|</li>
         <li><button mat-button [routerLinkActive]="['active']" [routerLink]="['demo']">Demos</button>|</li>
         <li><button mat-button [routerLinkActive]="['active']" [routerLink]="['about']">About</button>|</li>
         <li><button mat-button [routerLinkActive]="['active']" [routerLink]="['impressum']">Impressum</button></li>
@@ -11,3 +14,4 @@
     </mat-toolbar-row>
   </mat-toolbar>
 </div>
+

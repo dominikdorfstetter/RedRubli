@@ -8,6 +8,12 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* for sidenav to take a whole page */
+html, body { 
+    margin: 0;
+    height: 100%;
+}
+
 .highlighted {
     font-size: 1.2em;
 }

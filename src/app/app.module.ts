@@ -11,8 +11,6 @@ import { environment } from '../environments/environment';
 /* component Libraries */
 import { MaterialModule } from './shared/modules/material.module';
 
-import { AppRoutingModule } from './app-routing.module';
-
 /* The actual app components */
 import { AppComponent } from './app.component';
 import { AboutComponent } from './components/about/about.component';
@@ -25,6 +23,8 @@ import { StartComponent } from './components/start/start.component';
 
 /* Multi Touch Support */
 import 'hammerjs';
+import { HeaderComponent } from './navigation/header/header.component';
+import { RoutingModule } from './shared/services/routing/routing.module';
 
 @NgModule({
   declarations: [
@@ -35,13 +35,14 @@ import 'hammerjs';
     ImpressumComponent,
     PageNotFoundComponent,
     DemoComponent,
-    StartComponent
+    StartComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
-    MaterialModule
+    MaterialModule,
+    RoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
