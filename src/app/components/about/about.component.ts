@@ -16,31 +16,19 @@ interface Feature {
   styleUrls: ['./about.component.scss']
 })
 export class AboutComponent implements OnInit {
-  public versionNumber = 0.2 as number;
+  public versionNumber = 0.4 as number;
   public creationDate = '24.03.2018' as string;
-  public lastUpdate = '24.03.2018' as string;
+  public lastUpdate = '20.07.2019' as string;
   public features = [
     {
-      title: 'Angular (7) with SCSS'
+      title: 'Angular (8) with SCSS'
     },
     {
-      title: 'primeNg as a rich component-library'
-    },
-    {
-      title: 'Googles Material as general style-guideline and component library'
-    },
-    {
-      title: 'bootstrap-template for primeNg'
+      title: 'Googles Material'
     },
     {
       title: 'configuration folders and loading system'
     },
-    {
-      title: 'logging'
-    },
-    {
-      title: 'redux-store'
-    }
   ] as Feature[];
 
   public fonts = [
