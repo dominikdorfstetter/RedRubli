@@ -21,10 +21,20 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { DemoComponent } from './components/demo/demo.component';
 import { StartComponent } from './components/start/start.component';
 
+/* Google Firebase */
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+
 /* Multi Touch Support */
 import 'hammerjs';
+
 import { HeaderComponent } from './navigation/header/header.component';
 import { RoutingModule } from './shared/services/routing/routing.module';
+import { LoginComponent } from './shared/components/login/login.component';
+import { RegisterComponent } from './shared/components/register/register.component';
+import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -36,12 +46,20 @@ import { RoutingModule } from './shared/services/routing/routing.module';
     PageNotFoundComponent,
     DemoComponent,
     StartComponent,
-    HeaderComponent
+    HeaderComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AngularFireAuthModule,
+    AngularFireAuthGuardModule,
     RoutingModule
   ],
   providers: [],
