@@ -1,21 +1,31 @@
-<h1>Starter Template Angular</h1>
-<h2>Details</h2>
-<p>made on - {{ creationDate }}</p>
-<p>last update - 20.07.2019</p>
-<p>Dominik Dorfstetter</p>
-<p class="versionnumber">version number {{ versionNumber }}</p>
-<hr />
-<h2>Features</h2>
-<ul *ngFor="let feature of features">
-  <li class="nopoint">{{ feature.title }}</li>
-</ul>
-<hr />
-<h2>Fonts</h2>
-<ul *ngFor="let font of fonts">
-  <li class="nopoint">
-    <div style="display:inline-block;" class="{{ font.style }} highlighted">
-      {{ font.title }}
-    </div>
-    <div style="display:inline-block;">&nbsp;- {{ font.usage }}</div>
-  </li>
-</ul>
+<section #section1>
+  <div class="content section">
+    <h1>Starter Template Angular</h1>
+    <h2>Details</h2>
+    <p>made on - {{ creationDate }}</p>
+    <p>last update - 20.07.2019</p>
+    <p>Dominik Dorfstetter</p>
+    <p class="versionnumber">version number {{ versionNumber }}</p>
+  </div>
+</section>
+<section #section2>
+  <div class="content section">
+    <h2>Features</h2>
+    <ul *ngFor="let feature of features">
+      <li class="nopoint">{{ feature.title }}</li>
+    </ul>
+  </div>
+</section>
+<section #section3>
+  <div class="content section">
+    <h2>Fonts</h2>
+    <ul *ngFor="let font of fonts">
+      <li class="nopoint">
+        <div style="display:inline-block;" class="{{ font.style }} highlighted">
+          {{ font.title }}
+        </div>
+        <div style="display:inline-block;">&nbsp;- {{ font.usage }}</div>
+      </li>
+    </ul>
+  </div>
+</section>

@@ -23,7 +23,7 @@ const routes: Routes = [
   imports: [
     AngularFireAuthModule,
     CommonModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, {anchorScrolling: 'enabled'})
   ],
   exports: [
     RouterModule

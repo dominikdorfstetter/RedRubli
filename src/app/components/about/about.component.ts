@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 interface Font {
   title: string;
@@ -16,6 +16,9 @@ interface Feature {
   styleUrls: ['./about.component.scss']
 })
 export class AboutComponent implements OnInit {
+  @ViewChild('section1', {static: true}) section1: ElementRef;
+  @ViewChild('section2', {static: true}) section2: ElementRef;
+  @ViewChild('section3', {static: true}) section3: ElementRef;
   public versionNumber = 0.4 as number;
   public creationDate = '24.03.2018' as string;
   public lastUpdate = '20.07.2019' as string;
@@ -66,5 +69,9 @@ export class AboutComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.section1.nativeElement.scrollIntoView({behavior: "smooth", block: "start"});
+    this.section2.nativeElement.scrollIntoView({behavior: "smooth"});
+    this.section3.nativeElement.scrollIntoView({behavior: "smooth"});
+  }
 }

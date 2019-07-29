@@ -12,6 +12,7 @@
 html, body { 
     margin: 0;
     height: 100%;
+    scroll-behavior: smooth;
 }
 
 .highlighted {
@@ -126,17 +127,16 @@ body {
         padding: 0;
     }
     .main {
-        margin-top: 130px;
         min-height: 70vh;
         text-align: center;
         h1 {
             color: $primary-color;
-            font-family: $ff-headline;
+            font-family: 'Open Sans';
             font-size: $fs-biggest;
         }
         h2 {
             color: $primary-color;
-            font-family: $ff-headline;
+            font-family: 'Open Sans';
             font-size: $fs-big;
             margin-top: 40px;
         }
@@ -167,6 +167,53 @@ main {
   *zoom: 1;
 }
 section {
-  overflow: hidden;
+  width: 100%;
+  display: table;
+  margin: 0;
+  max-width: none;
+  background-color: rgb(255, 255, 255);
   height: 100vh;
+  
+  &:nth-of-type(2n) {
+    background-color: rgb(160, 160, 160);
+  }
+}
+
+.content {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.login_window {
+    background-color: $primary-color;
+    color: white;
+}
+
+.mat-form-field {
+    padding-top: .1em;
+    padding-left: .4em;
+    background-color: white;
+}
+
+.mat-form-field-underline {
+    display: none;
+}
+
+.mat-form-field  .mat-form-field-flex {
+    background-color: white;
+    color: black;
+    font-size: 1.2em;
+}
+
+.mat-form-field-underline {
+    padding-bottom: .8em;
+}
+
+.keepScrolling {
+    max-width: 2.5em;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
 }

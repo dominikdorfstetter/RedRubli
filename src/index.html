@@ -1,25 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>redRubli - Angular Template</title>
-    <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- replace favicon.ico with your own! -->
-    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico" />
+<head>
+  <meta charset="utf-8" />
+  <title>redRubli - Angular Template</title>
+  <base href="/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- third party: material icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <!-- replace favicon.ico with your own! -->
+  <link rel="icon" type="image/x-icon" href="./assets/favicon.ico" />
 
-    <!-- jQuery -->
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.min.js"
-      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <body>
-    <app-root></app-root>
-  </body>
+  <!-- third party: material icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <script src="./assets/vendor/fullpage.min.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <app-root></app-root>
+  <script>
+    new fullpage('#fullpage', {
+      //options here
+      autoScrolling: true,
+      scrollHorizontally: true
+    });
+  </script>
+</body>
+
 </html>
