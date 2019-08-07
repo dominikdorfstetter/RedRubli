@@ -2,8 +2,9 @@ import {
   Injectable
 } from '@angular/core';
 import {
-  Observable
+  Observable, of
 } from 'rxjs';
+import { flatMap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

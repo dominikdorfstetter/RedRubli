@@ -1,9 +1,11 @@
 import { Injectable, OnInit } from '@angular/core';
 import { of, Observable, Subscription, from } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { retry, switchMap, catchError, flatMap, tap, map } from 'rxjs/operators';
+import { retry, switchMap, catchError, flatMap, tap, map, shareReplay } from 'rxjs/operators';
 import { FetchService } from './fetch.service';
 
+/*  interfaces for country object
+  ==============================*/
 export interface Country {
   name: string;
   topLevelDomain?: string[];
@@ -70,33 +72,30 @@ export enum LSC {
   ES='es'
 }
 
+const API_URL = 'https://restcountries.eu/rest/v2/all';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CountryService {
-  countries: Country;
-  countriesS: Subscription;
 
   constructor(private fetchService: FetchService) { }
 
+  /*  fetch countries from API
+  ============================*/
   fetchCountries = (): Observable<any> => {
-    return this.fetchData('https://restcountries.eu/rest/v2/all');
+    return this.fetchService.fetchData(API_URL).pipe(
+      flatMap((response: Response) => response.json()),
+      catchError(err => of(err)),
+      shareReplay());
   }
 
+  /*  get countries localized as string array
+  ==========================================*/
   getCountries(lsc: LSC): Observable<string[]> {
     return this.fetchCountries().pipe(
       map((countries: Country[]) => 
           countries.map((country: Country) => 
               (lsc === LSC.EN) ? country.name : country.translations[lsc])));
-  }
-
-  fetchData(url: string): Observable<Response> {
-    if(!!url)
-      return this.fetchService.fetchData(url).pipe(
-                  flatMap((response: Response) => response.json()),
-                  catchError(err => of(err)));
-    else
-        return of(null);
   }
 }
