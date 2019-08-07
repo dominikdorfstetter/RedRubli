@@ -19,7 +19,7 @@
       </p>
 
       <div class="button">
-        <button type="submit" mat-raised-button>Login</button>
+        <button (click)="submit()" mat-raised-button>Login</button>
       </div>
       <br/>
       <div class="button"> 
@@ -31,5 +31,6 @@
 </mat-card>
 
 <ng-template #logout>
+  <code>Hello {{ getUser() | async | json }}</code>
   <button mat-button (click)="signOut()">Log Out</button>
 </ng-template>

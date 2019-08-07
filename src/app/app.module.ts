@@ -30,7 +30,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import 'hammerjs';
 
 import { HeaderComponent } from './navigation/header/header.component';
-import { RoutingModule } from './shared/services/routing/routing.module';
+import { RoutingModule } from './shared/routing.module';
 import { LoginComponent } from './shared/components/login/login.component';
 import { RegisterComponent } from './shared/components/register/register.component';
 import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';

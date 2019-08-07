@@ -2,9 +2,11 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angu
 import { FormGroup, FormControl } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { SnackbarService } from '../../snackbar.service';
-import { UserService } from '../../services/user.service';
-import { Observable } from 'rxjs';
+import { UserService, Credentials } from '../../services/user.service';
+import { Observable, of } from 'rxjs';
 import { User } from 'firebase';
+import { FirebaseErrorService } from '../../services/firebase.error.service';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +22,10 @@ export class LoginComponent {
     password: new FormControl(''),
   });
   
-  constructor(public afAuth: AngularFireAuth, private snackbarService: SnackbarService, private userService: UserService) { }
+  constructor(public afAuth: AngularFireAuth, 
+              private snackbarService: SnackbarService, 
+              private userService: UserService,
+              private fes: FirebaseErrorService) { }
 
   signOut(): void {
     this.userService.logOut();
@@ -32,11 +37,17 @@ export class LoginComponent {
 
   submit() {
     if (this.form.valid) {
-      this.afAuth.auth.signInWithEmailAndPassword(this.form.value['username'], this.form.value['password'])
-        .then(data => {
-          this.snackbarService.showSnackBar('You are now authenticated.', 'OK');
-        });
-    } 
+      const credentials = {
+        username: this.form.value['username'],
+        password: this.form.value['password']
+      } as Credentials;
+
+      this.userService.logInWithEmailAndPassword(credentials).then(() => {
+        this.snackbarService.showSnackBar('Willkommen.', 'OK');
+      }).catch(err => {
+        this.snackbarService.showSnackBar(this.fes.getTranslation(err.code), 'OK');
+      });
+    }
   }
 
   googleSignIn() {

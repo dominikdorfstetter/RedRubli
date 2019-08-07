@@ -8,14 +8,12 @@ import {
 import {
   ReplaySubject,
   Observable,
-  of
+  of,
+  Subscription
 } from 'rxjs';
 import {
-  first,
   filter,
   switchMap,
-  tap,
-  map
 } from 'rxjs/operators';
 import {
   User
@@ -31,28 +29,37 @@ import { auth } from  'firebase/app';
 
 const userUrl: String = 'users';
 
+
+export interface Credentials {
+  username: string;
+  password: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserService implements OnInit {
-  private user$: ReplaySubject < User > ;
+  private user$: ReplaySubject<User> ;
+  private userSub: Subscription;
 
   constructor(private afAuth: AngularFireAuth,
     private snackbarService: SnackbarService,
     private afStore: AngularFirestore) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
-  // get userdata from firestore
-  getUser(): Observable < User > {
+  /*  get user obj from firestore
+    =============================*/
+  getUser(): Observable<User> {
     if (!this.user$) {
       this.user$ = new ReplaySubject(1);
-      this.afAuth.authState.pipe(
+      this.userSub = this.afAuth.authState.pipe(
         // we fetch the real saved user profile from firestore
         switchMap((user: User) => {
           // user is logged in
           if (user) {
-            return this.afStore.doc < User > (`${userUrl}/${user.uid}`).valueChanges();
+            return this.afStore.doc<User>(`${userUrl}/${user.uid}`).valueChanges();
           } else {
             // user is logged out
             return of(null);
@@ -60,7 +67,7 @@ export class UserService implements OnInit {
         }),
       ).subscribe(
         (user: User) => {
-          this.user$.next(user);
+          if(!!user) this.user$.next(user);
         },
         err => this.user$.next(err),
       );
@@ -68,21 +75,40 @@ export class UserService implements OnInit {
     return this.user$.asObservable().pipe(filter(user => !!user));
   }
 
-  // end session
+  /*  end your current session
+    ==========================*/
   logOut(): void {
     this.afAuth.auth.signOut().then(_ => {
       this.snackbarService.showSnackBar('Hope we will see you soon!', 'Goodbye!');
-
-      // killing replay subjects
-      if (this.user$) this.user$.complete();
-      this.user$ = undefined;
+      this.clearUserObj();
     });
   }
 
-  // set user data
+  /*  login with email and password
+    ==============================*/
+  async logInWithEmailAndPassword({username, password}: Credentials) {
+    this.clearUserObj();
+    return await this.afAuth.auth.signInWithEmailAndPassword(username, password)
+      .then(() => {
+        return Promise.resolve();
+      }).catch(err => {
+        return Promise.reject(err);
+      });
+  }
+
+  /*  clear current userObj
+    ========================*/
+  private clearUserObj(): void {
+    if (this.user$) this.user$.complete();
+    this.userSub.unsubscribe();
+    this.user$ = undefined;
+  }
+
+  /*  set user data on firebase user obj
+    ====================================*/
   private updateUserData(user) {
     // Sets user data to firestore on login
-    const userRef: AngularFirestoreDocument < User > = this.afStore.doc(`${userUrl}/${user.uid}`);
+    const userRef: AngularFirestoreDocument<User> = this.afStore.doc(`${userUrl}/${user.uid}`);
 
     const data = {
       uid: user.uid,
@@ -96,14 +122,17 @@ export class UserService implements OnInit {
     })
   }
 
-  // Google signIn
+  /*  Google Sign in
+    ================*/
   async googleSignin() {
+    this.clearUserObj();
     const provider = new auth.GoogleAuthProvider();
     const credential = await this.afAuth.auth.signInWithPopup(provider);
-    return this.updateUserData(credential.user);
+    return !!credential ? Promise.resolve(this.updateUserData(credential.user)) : Promise.reject();
   }
 
-  // Send Email-Verification
+  /*  Send email verification link
+    ==============================*/
   async sendEmailVerification() {
     await this.afAuth.auth.currentUser.sendEmailVerification();
   }
