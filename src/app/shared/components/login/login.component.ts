@@ -2,11 +2,11 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angu
 import { FormGroup, FormControl } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { SnackbarService } from '../../snackbar.service';
-import { UserService, Credentials } from '../../services/user.service';
-import { Observable, of } from 'rxjs';
+import { UserService, LoginCredentials } from '../../services/user.service';
+import { Observable } from 'rxjs';
 import { User } from 'firebase';
 import { FirebaseErrorService } from '../../services/firebase.error.service';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { CountryService, LSC } from '../../services/country.service';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +16,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 export class LoginComponent {
   @Input() error: string | null;
   @Output() submitEM = new EventEmitter();
+  public countries: Observable<string[]>;
 
   form: FormGroup = new FormGroup({
     username: new FormControl(''),
@@ -25,10 +26,18 @@ export class LoginComponent {
   constructor(public afAuth: AngularFireAuth, 
               private snackbarService: SnackbarService, 
               private userService: UserService,
-              private fes: FirebaseErrorService) { }
+              private fes: FirebaseErrorService,
+              private countryService: CountryService) 
+  { 
+    this.countries = this.getCountries();
+  }
 
   signOut(): void {
     this.userService.logOut();
+  }
+
+  getCountries(): Observable<string[]> {
+    return this.countryService.getCountries(LSC.DE);
   }
 
   getUser(): Observable<User> {
@@ -40,7 +49,7 @@ export class LoginComponent {
       const credentials = {
         username: this.form.value['username'],
         password: this.form.value['password']
-      } as Credentials;
+      } as LoginCredentials;
 
       this.userService.logInWithEmailAndPassword(credentials).then(() => {
         this.snackbarService.showSnackBar('Willkommen.', 'OK');

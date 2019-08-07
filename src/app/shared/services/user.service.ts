@@ -26,13 +26,30 @@ import {
   AngularFirestoreDocument
 } from '@angular/fire/firestore';
 import { auth } from  'firebase/app';
+import { CountryService } from './country.service';
 
 const userUrl: String = 'users';
 
-
-export interface Credentials {
+/*  interface: login credentials
+  =============================*/
+export interface LoginCredentials {
   username: string;
   password: string;
+}
+
+/*  interface: user profile data
+  =============================*/
+export interface ProfileData {
+  email: string;
+  birthday: Date;
+  
+}
+
+interface Contact {
+  zipcode: number;
+  street: string;
+  city: string;
+  country: string;
 }
 
 @Injectable({
@@ -86,7 +103,7 @@ export class UserService implements OnInit {
 
   /*  login with email and password
     ==============================*/
-  async logInWithEmailAndPassword({username, password}: Credentials) {
+  async logInWithEmailAndPassword({username, password}: LoginCredentials) {
     this.clearUserObj();
     return await this.afAuth.auth.signInWithEmailAndPassword(username, password)
       .then(() => {
@@ -120,6 +137,24 @@ export class UserService implements OnInit {
     return userRef.set(data, {
       merge: true
     })
+  }
+
+  /*  set user data on firebase user obj
+    ====================================*/
+  private updateUserProfile(profileData: ProfileData) {
+    // Sets user data to firestore on login
+/*     const userRef: AngularFirestoreDocument<User> = this.afStore.doc(`${userUrl}/${user.uid}`);
+
+    const data = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL
+    } as User;
+
+    return userRef.set(data, {
+      merge: true
+    }) */
   }
 
   /*  Google Sign in

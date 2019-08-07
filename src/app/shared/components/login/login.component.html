@@ -30,6 +30,12 @@
   </mat-card-content>
 </mat-card>
 
+<ul>
+  <li *ngFor="let country of countries | async">
+    {{ country }}
+  </li>
+</ul>
+
 <ng-template #logout>
   <code>Hello {{ getUser() | async | json }}</code>
   <button mat-button (click)="signOut()">Log Out</button>
