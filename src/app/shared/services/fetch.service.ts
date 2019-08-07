@@ -2,9 +2,8 @@ import {
   Injectable
 } from '@angular/core';
 import {
-  Observable, of
+  Observable
 } from 'rxjs';
-import { flatMap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +12,10 @@ export class FetchService {
 
   constructor() {}
 
+  /*  fetch data from a URL
+  =========================*/
   fetchData(url: string): Observable<Response> {
-    const fetchData = Observable.create(observer => {
+    const response$ = Observable.create(observer => {
       fetch(`${url}`)
         .then(data => {
           observer.next(data);
@@ -23,6 +24,6 @@ export class FetchService {
         .catch(err => observer.error(err));
     });
 
-    return fetchData;
+    return response$;
   }
 }

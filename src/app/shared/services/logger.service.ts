@@ -7,20 +7,20 @@ export class LoggerService {
 
   constructor() { }
 
-  /*  log level info and push to IONIC PRO
-  ====================================*/
+  /*  log level info
+  ==================*/
   public logInfo(message: string): void {
     console.log(this.getCurrentTimeAsString() + ' [INFO] - ' + message);
   }
 
-  /*  log level warn and push to IONIC PRO
-    ==================================*/
+  /*  log level warn
+    ================*/
   public logWarn(message: string): void {
     console.log(this.getCurrentTimeAsString() + ' [WARN] - ' + message);
   }
 
-  /*  log level error and push to IONIC PRO
-    =====================================*/
+  /*  log level error
+    =================*/
   public logError(message: string): void {
     console.error(this.getCurrentTimeAsString() +  ' [ERROR] - ' + message);
   }

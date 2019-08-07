@@ -1,7 +1,6 @@
-import { Injectable, OnInit } from '@angular/core';
-import { of, Observable, Subscription, from } from 'rxjs';
-import { fromFetch } from 'rxjs/fetch';
-import { retry, switchMap, catchError, flatMap, tap, map, shareReplay } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { of, Observable } from 'rxjs';
+import { catchError, flatMap, map, shareReplay } from 'rxjs/operators';
 import { FetchService } from './fetch.service';
 
 /*  interfaces for country object
