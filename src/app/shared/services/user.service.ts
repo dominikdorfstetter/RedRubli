@@ -37,19 +37,34 @@ export interface LoginCredentials {
   password: string;
 }
 
+export enum GENDER {
+  MALE='m',
+  FEMALE='f',
+  DIVERSE='d'
+}
+
 /*  interface: user profile data
   =============================*/
 export interface ProfileData {
-  email: string;
-  birthday: Date;
-  
+  title: string;
+  firstname: string;
+  lastname: string;
+  birthday: string;
+  gender: GENDER;
 }
 
-interface Contact {
-  zipcode: number;
-  street: string;
-  city: string;
+export interface RegisterData {
+  profile: ProfileData;
+  email: string;
+  password: string;
+  contact: ContactData;
+}
+
+export interface ContactData {
   country: string;
+  zipcode: number;
+  city: string;
+  street: string;
 }
 
 @Injectable({
