@@ -93,6 +93,8 @@ export class CountryService {
   ==========================================*/
   getCountries(lsc: LSC): Observable<string[]> {
     return this.fetchCountries().pipe(
+      // if language is english return country.name
+      // if not, return the translation for it
       map((countries: Country[]) => 
           countries.map((country: Country) => 
               (lsc === LSC.EN) ? country.name : country.translations[lsc])));
