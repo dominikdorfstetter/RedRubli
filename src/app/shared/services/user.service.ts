@@ -20,7 +20,7 @@ import {
 } from 'firebase';
 import {
   SnackbarService
-} from '../snackbar.service';
+} from './snackbar.service';
 import {
   AngularFirestore,
   AngularFirestoreDocument

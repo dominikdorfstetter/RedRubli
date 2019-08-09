@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { SnackbarService } from '../../snackbar.service';
+import { SnackbarService } from '../../services/snackbar.service';
 import { UserService, LoginCredentials } from '../../services/user.service';
 import { Observable } from 'rxjs';
 import { User } from 'firebase';
