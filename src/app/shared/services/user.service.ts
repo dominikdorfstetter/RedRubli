@@ -27,6 +27,7 @@ import {
 } from '@angular/fire/firestore';
 import { auth } from  'firebase/app';
 import { CountryService } from './country.service';
+import { LoggerService } from './logger.service';
 
 const userUrl: String = 'users';
 
@@ -79,7 +80,8 @@ export class UserService implements OnInit {
 
   constructor(private afAuth: AngularFireAuth,
     private snackbarService: SnackbarService,
-    private afStore: AngularFirestore) {}
+    private afStore: AngularFirestore,
+    private loggerS: LoggerService) {}
 
   ngOnInit(): void {
   }
@@ -103,7 +105,10 @@ export class UserService implements OnInit {
         }),
       ).subscribe(
         (user: User) => {
-          if(!!user) this.user$.next(user);
+          if(!!user) {
+            this.user$.next(user);
+            this.loggerS.logInfo('Successfully performed login.');
+          }
         },
         err => this.user$.next(err),
       );
