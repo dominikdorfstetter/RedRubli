@@ -70,8 +70,5 @@ export class AboutComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.section1.nativeElement.scrollIntoView({behavior: "smooth", block: "start"});
-    this.section2.nativeElement.scrollIntoView({behavior: "smooth"});
-    this.section3.nativeElement.scrollIntoView({behavior: "smooth"});
   }
 }

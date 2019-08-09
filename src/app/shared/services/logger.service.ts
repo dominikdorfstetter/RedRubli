@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 
+/**
+ * @author Dominik Dorfstetter (dorfstetter@posteo.de)
+ */
 @Injectable({
   providedIn: 'root'
 })

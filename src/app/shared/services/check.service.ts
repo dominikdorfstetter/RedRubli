@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 const MIN_LEN_PASSWORD: number = 6;
 const MAX_LEN_PASSWORD: number = 15;
 
+/**
+ * @author Dominik Dorfstetter (dorfstetter@posteo.de)
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -32,7 +35,7 @@ export class CheckService {
   public checkString(target: string, len_min: number, len_max: number): boolean {
     const targetTrim = target.trim();
     return !!targetTrim && targetTrim.length >= len_min 
-            && targetTrim.length <= len_max;
+            && targetTrim.length <= len_max; 
   }
 
   /*  test zipCode

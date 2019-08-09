@@ -1,11 +1,38 @@
 import { Injectable } from '@angular/core';
-import { of, Observable } from 'rxjs';
-import { catchError, flatMap, map, shareReplay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 import { FetchService } from './fetch.service';
+import { Serializable } from './serializable';
+
+export class Country extends Serializable implements CountryInterface {
+  name: string;  topLevelDomain?: string[];
+  alpha2Code: string;
+  alpha3Code: string;
+  callingCodes?: string[];
+  capital: string;
+  altSpellings?: string[];
+  region: string;
+  subregion: string;
+  population: number;
+  latlng?: number[];
+  demonym: string;
+  area: number;
+  gini: number;
+  timezones?: string[];
+  borders?: string[];
+  nativeName: string;
+  numericCode: string;
+  currencies?: CurrenciesEntity[];
+  languages?: LanguagesEntity[];
+  translations: Translations;
+  flag: string;
+  regionalBlocs?: RegionalBlocsEntity[];
+  cioc: string;
+}
 
 /*  interfaces for country object
   ==============================*/
-export interface Country {
+export interface CountryInterface {
   name: string;
   topLevelDomain?: string[];
   alpha2Code: string;
@@ -73,6 +100,9 @@ export enum LSC {
 
 const API_URL = 'https://restcountries.eu/rest/v2/all';
 
+/**
+ * @author Dominik Dorfstetter (dorfstetter@posteo.de)
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -82,11 +112,12 @@ export class CountryService {
 
   /*  fetch countries from API
   ============================*/
-  fetchCountries = (): Observable<any> => {
-    return this.fetchService.fetchData(API_URL).pipe(
-      flatMap((response: Response) => response.json()),
-      catchError(err => of(err)),
-      shareReplay());
+  fetchCountries(): Observable<Country[]> {
+    return this.fetchService.fetchJSON(API_URL).pipe(
+      map(res => {
+        return res.map(el => new Country(el));
+      }),
+      shareReplay()) as Observable<Country[]>;
   }
 
   /*  get countries localized as string array

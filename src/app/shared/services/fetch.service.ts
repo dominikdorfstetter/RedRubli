@@ -2,8 +2,13 @@ import {
   Injectable
 } from '@angular/core';
 import {
-  Observable
+  Observable, of
 } from 'rxjs';
+import { flatMap, catchError } from 'rxjs/operators';
+
+/**
+ * @author Dominik Dorfstetter (dorfstetter@posteo.de)
+ */
 
 @Injectable({
   providedIn: 'root'
@@ -26,4 +31,41 @@ export class FetchService {
 
     return response$;
   }
+
+  /**
+   * Fetch JSON from a response
+   * @param url URL that we want to fetch
+   */
+  fetchJSON(url: string): Observable<any> {
+    return this.fetchData(url).pipe(
+        flatMap((response: Response) => response.json()),
+        catchError(err => of(err)
+      )
+    )
+  }
+
+  /**
+   * Fetch BLOB from a response
+   * @param url URL that we want to fetch
+   */
+  fetchBlob(url: string): Observable<Blob> {
+    return this.fetchData(url).pipe(
+        flatMap((response: Response) => response.blob()),
+        catchError(err => of(err)
+      )
+    )
+  }
+
+  /**
+   * Fetch string from a response
+   * @param url URL that we want to fetch
+   */
+  fetchText(url: string): Observable<string> {
+    return this.fetchData(url).pipe(
+        flatMap((response: Response) => response.text()),
+        catchError(err => of(err)
+      )
+    )
+  }
+
 }

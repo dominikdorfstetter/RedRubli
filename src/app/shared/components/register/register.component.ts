@@ -60,7 +60,7 @@ export class RegisterComponent implements OnInit {
    * sets form validation to a desired state
    * @param value boolean
    */
-  setFormValidation(value: boolean) {
+  setFormValidation(value: boolean): void {
     this.formatEmail = value;
     this.formatNachname = value;
     this.formatVorname = value;
@@ -75,7 +75,7 @@ export class RegisterComponent implements OnInit {
    * validates all form data
    * @param userInput the input data from register form
    */
-  validateRegister(userInput: RegisterFormInput) {
+  validateRegister(userInput: RegisterFormInput): boolean {
     userInput.email = this.trimInput(userInput.email, false);
     userInput.password = this.trimInput(userInput.password, true);
     userInput.firstname = this.trimInput(userInput.firstname, false);
@@ -149,4 +149,5 @@ export class RegisterComponent implements OnInit {
 
     }
   }
+  
 }

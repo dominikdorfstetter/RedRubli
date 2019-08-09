@@ -30,6 +30,9 @@ export const WRONG_PASSWORD = 'auth/wrong-password';
 export const EMAIL_IN_USE = 'auth/email-already-in-use';
 export const WEAK_PASSWORD = 'auth/weak-password';
 
+/**
+ * @author Dominik Dorfstetter (dorfstetter@posteo.de)
+ */
 @Injectable({
   providedIn: 'root'
 })

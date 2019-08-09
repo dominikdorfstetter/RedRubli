@@ -67,6 +67,9 @@ export interface ContactData {
   street: string;
 }
 
+/**
+ * @author Dominik Dorfstetter (dorfstetter@posteo.de)
+ */
 @Injectable({
   providedIn: 'root'
 })
