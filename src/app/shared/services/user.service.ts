@@ -84,8 +84,9 @@ export class UserService implements OnInit {
   ngOnInit(): void {
   }
 
-  /*  get user obj from firestore
-    =============================*/
+  /**
+   * get user obj from firestore
+   */
   getUser(): Observable<User> {
     if (!this.user$) {
       this.user$ = new ReplaySubject(1);
@@ -110,8 +111,9 @@ export class UserService implements OnInit {
     return this.user$.asObservable().pipe(filter(user => !!user));
   }
 
-  /*  end your current session
-    ==========================*/
+  /**
+   * end your current session
+   */
   logOut(): void {
     this.afAuth.auth.signOut().then(_ => {
       this.snackbarService.showSnackBar('Hope we will see you soon!', 'Goodbye!');
@@ -119,8 +121,10 @@ export class UserService implements OnInit {
     });
   }
 
-  /*  login with email and password
-    ==============================*/
+  /**
+   * login with email and password
+   * @param {username, password} Credentials username/email and password
+   */
   async logInWithEmailAndPassword({username, password}: LoginCredentials) {
     this.clearUserObj();
     return await this.afAuth.auth.signInWithEmailAndPassword(username, password)
@@ -131,16 +135,18 @@ export class UserService implements OnInit {
       });
   }
 
-  /*  clear current userObj
-    ========================*/
+  /**
+   * clear current userObj
+   */
   private clearUserObj(): void {
     if (this.user$) this.user$.complete();
     this.userSub.unsubscribe();
     this.user$ = undefined;
   }
 
-  /*  set user data on firebase user obj
-    ====================================*/
+  /**
+   * set user data on firebase user obj
+   */
   private updateUserData(user) {
     // Sets user data to firestore on login
     const userRef: AngularFirestoreDocument<User> = this.afStore.doc(`${userUrl}/${user.uid}`);
@@ -157,8 +163,10 @@ export class UserService implements OnInit {
     })
   }
 
-  /*  set user data on firebase user obj
-    ====================================*/
+  /**
+   * set user data on firebase user obj
+   * @param profileData Profile data to set on user
+   */
   private updateUserProfile(profileData: ProfileData) {
     // Sets user data to firestore on login
 /*     const userRef: AngularFirestoreDocument<User> = this.afStore.doc(`${userUrl}/${user.uid}`);
@@ -175,8 +183,9 @@ export class UserService implements OnInit {
     }) */
   }
 
-  /*  Google Sign in
-    ================*/
+  /**
+   * Google Sign in
+   */
   async googleSignin() {
     this.clearUserObj();
     const provider = new auth.GoogleAuthProvider();
@@ -184,13 +193,17 @@ export class UserService implements OnInit {
     return !!credential ? Promise.resolve(this.updateUserData(credential.user)) : Promise.reject();
   }
 
-  /*  Send email verification link
-    ==============================*/
+  /**
+   * Send email verification link
+   */
   async sendEmailVerification() {
     await this.afAuth.auth.currentUser.sendEmailVerification();
   }
 
-  // Send password reset email
+  /**
+   * Send password reset email
+   * @param passwordResetEmail the email we send the password reset mail to
+   */
   async sendPasswordResetEmail(passwordResetEmail: string) {
     return await this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail);
   }

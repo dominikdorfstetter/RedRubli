@@ -29,7 +29,6 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 /* Multi Touch Support */
 import 'hammerjs';
 
-import { HeaderComponent } from './navigation/header/header.component';
 import { RoutingModule } from './shared/routing.module';
 import { LoginComponent } from './shared/components/login/login.component';
 import { RegisterComponent } from './shared/components/register/register.component';
@@ -46,7 +45,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     PageNotFoundComponent,
     DemoComponent,
     StartComponent,
-    HeaderComponent,
     LoginComponent,
     RegisterComponent
   ],

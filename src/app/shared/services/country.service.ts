@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay, tap } from 'rxjs/operators';
 import { FetchService } from './fetch.service';
 import { Serializable } from './serializable';
 
@@ -110,18 +110,23 @@ export class CountryService {
 
   constructor(private fetchService: FetchService) { }
 
-  /*  fetch countries from API
-  ============================*/
+
+  /** fetch countries from API
+   *  @returns Observable<Country[]> Observable of countries
+   */
   fetchCountries(): Observable<Country[]> {
     return this.fetchService.fetchJSON(API_URL).pipe(
       map(res => {
         return res.map(el => new Country(el));
       }),
+      tap(console.log),
       shareReplay()) as Observable<Country[]>;
   }
 
-  /*  get countries localized as string array
-  ==========================================*/
+  /**
+   * get countries localized as string array
+   * @param lsc Language Short Code
+   */
   getCountries(lsc: LSC): Observable<string[]> {
     return this.fetchCountries().pipe(
       // if language is english return country.name

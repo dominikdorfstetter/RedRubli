@@ -45,7 +45,7 @@ export class FetchService {
   }
 
   /**
-   * Fetch BLOB from a response
+   * Fetch Blob from a response
    * @param url URL that we want to fetch
    */
   fetchBlob(url: string): Observable<Blob> {
