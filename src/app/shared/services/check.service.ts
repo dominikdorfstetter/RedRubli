@@ -3,6 +3,13 @@ import { Injectable } from '@angular/core';
 const MIN_LEN_PASSWORD: number = 6;
 const MAX_LEN_PASSWORD: number = 15;
 
+/** 
+ * left trim
+ */
+String.prototype.trimLeft = String.prototype.trimLeft || function () {
+  return this.replace(/^\s+/,"");
+};
+
 /**
  * @author Dominik Dorfstetter (dorfstetter@posteo.de)
  */
@@ -19,7 +26,7 @@ export class CheckService {
     const mailRegex = 
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    return mailRegex.test(email.trim());
+    return mailRegex.test(email);
   };
 
   /*  uses set default values to check password
@@ -38,13 +45,18 @@ export class CheckService {
             && targetTrim.length <= len_max; 
   }
 
-  /*  test zipCode
-    ==============*/
-  public checkZipCode(zipCode: string): boolean {
-    const expression = /^\d{4}/; // just test zipCode for Austria --> 4 digits
-    const zipcode_trim = zipCode.trim();
+  /**
+   * check a zipcode for validity
+   * @param zipCode a zipcode to check
+   * @param digits how many digits does the zipcode have
+   */
+  public checkZipCode(zipCode: string, digits: number): boolean {
+    let expression_str = '^\\d{[length]}$';
+    expression_str = expression_str.replace('[length]', '' + digits);
 
-    return !!zipcode_trim && expression.test(zipcode_trim);
+    const expression = new RegExp(expression_str);
+
+    return expression.test(zipCode);
   }
 
   /*  test phone number
