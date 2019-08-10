@@ -1,5 +1,9 @@
-import { TestBed } from '@angular/core/testing';
-import { CheckService } from './check.service';
+import {
+  TestBed
+} from '@angular/core/testing';
+import {
+  CheckService
+} from './check.service';
 
 describe('CheckService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
@@ -33,12 +37,19 @@ describe('CheckService', () => {
 
   fit('should test if an email is valid', () => {
     const service: CheckService = TestBed.get(CheckService);
-    const goodMail: string = 'test@test.at';
+    const goodMail: string[] = [
+      'test@test.at',
+      'test@test.co.at'
+    ];
     const badMail: string[] = [
       'test@test',
-      'test'];
+      'test'
+    ];
 
-    expect(service.checkEmail(goodMail)).toBeTruthy();
+    goodMail.forEach(mail => {
+      expect(service.checkEmail(mail)).toBeTruthy();
+    });
+
     badMail.forEach(mail => {
       expect(service.checkEmail(mail)).toBeFalsy();
     });
