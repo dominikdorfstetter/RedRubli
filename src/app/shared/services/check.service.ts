@@ -20,28 +20,37 @@ export class CheckService {
 
   constructor() { }
 
-  /*  check if email is valid
-    =========================*/
+  /**
+   * check if email is valid
+   * @param email the email to check
+   */
   public checkEmail = (email: string): boolean => {
     const mailRegex = 
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    return mailRegex.test(email);
+    return !!email && mailRegex.test(email);
   };
 
-  /*  uses set default values to check password
-    ==========================================*/
+  /**
+   * Test if a password matches our requirements
+   * @param password the password to check
+   */
   public checkPassword(password: string): boolean {
     const pass_trim = password.trimLeft().trimRight();
-    return !!pass_trim && pass_trim.length >= MIN_LEN_PASSWORD 
+    return !!password && pass_trim.length >= MIN_LEN_PASSWORD 
               && pass_trim.length <= MAX_LEN_PASSWORD;
   }
 
-  /*  check string, takes target and len_min, len_max
-    =================================================*/
+  /**
+   * check string, takes target and len_min, len_max
+   * @param target the string to check
+   * @param len_min minimum length
+   * @param len_max maximum length
+   * @returns true or false
+   */
   public checkString(target: string, len_min: number, len_max: number): boolean {
     const targetTrim = target.trim();
-    return !!targetTrim && targetTrim.length >= len_min 
+    return !!target && !!targetTrim && targetTrim.length >= len_min 
             && targetTrim.length <= len_max; 
   }
 
@@ -56,15 +65,16 @@ export class CheckService {
 
     const expression = new RegExp(expression_str);
 
-    return expression.test(zipCode);
+    return !!zipCode && expression.test(zipCode);
   }
 
-  /*  test phone number
-    ===================*/
+  /**
+   * test phone number
+   * @param phoneNumber the phoneNumber to test
+   */
   public checkPhoneNumber(phoneNumber: string): boolean {
-    const expression = /^[0-9()-+]+$/;
-    const phonenumber_trim = phoneNumber.trim();
+    const expression = /^(?:\+\d{1,3}|0\d{1,3}|00\d{1,2})?(?:\s?\(\d+\))?(?:[-\/\s.]|\d)+$/;
 
-    return !!phonenumber_trim && expression.test(phonenumber_trim);
+    return !!phoneNumber && expression.test(phoneNumber);
   }
 }
