@@ -26,7 +26,6 @@ import {
   AngularFirestoreDocument
 } from '@angular/fire/firestore';
 import { auth } from  'firebase/app';
-import { CountryService } from './country.service';
 import { LoggerService } from './logger.service';
 
 const userUrl: String = 'users';
