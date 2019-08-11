@@ -119,7 +119,6 @@ export class CountryService {
       map(res => {
         return res.map(el => new Country(el));
       }),
-      tap(console.log),
       shareReplay()) as Observable<Country[]>;
   }
 

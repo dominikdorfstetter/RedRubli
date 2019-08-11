@@ -2,8 +2,13 @@ import { Injectable } from '@angular/core';
 
 const MIN_LEN_PASSWORD: number = 6;
 const MAX_LEN_PASSWORD: number = 15;
+const PASSWORD_API = 'https://passwordutility.net/api/password/validate?password=';
+const GENERATE_PW_API = 
+  'https://passwordutility.net/api/password/generate?length={length}&uppercase={uppercase}&digits={digits}&specialcharacters={spchar}';
+// https://cmatskas.com/password-validation-and-creation-using-a-public-api/
+// TODO: create password API connection
 
-/** 
+  /** 
  * left trim
  */
 String.prototype.trimLeft = String.prototype.trimLeft || function () {
@@ -57,11 +62,11 @@ export class CheckService {
   /**
    * check a zipcode for validity
    * @param zipCode a zipcode to check
-   * @param digits how many digits does the zipcode have
+   * @param length how long is the zipCode?
    */
-  public checkZipCode(zipCode: string, digits: number): boolean {
+  public checkZipCode(zipCode: string, length: number): boolean {
     let expression_str = '^\\d{[length]}$';
-    expression_str = expression_str.replace('[length]', '' + digits);
+    expression_str = expression_str.replace('[length]', '' + length);
 
     const expression = new RegExp(expression_str);
 
