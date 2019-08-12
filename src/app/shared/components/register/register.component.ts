@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CheckService } from '../../services/check.service';
+import { Observable } from 'rxjs';
+import { CountryService, LSC } from '../../services/country.service';
 
 // interface for user input
 interface RegisterFormInput {
@@ -21,7 +23,7 @@ interface RegisterFormInput {
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-
+  public countries: Observable<string[]>;
   public acceptAGB: boolean;
   public birthday: Date;
   public formatEmail: boolean;
@@ -47,7 +49,9 @@ export class RegisterComponent implements OnInit {
     birthday: '' as string
   };
 
-  constructor(private checkProvider: CheckService) { }
+  constructor(private checkProvider: CheckService, private countryService: CountryService) {
+    this.countries = this.getCountries();
+  }
 
   ngOnInit() {
     // set form validation to true
@@ -150,4 +154,10 @@ export class RegisterComponent implements OnInit {
     }
   }
   
+  /**
+   * Display Countries
+   */
+  getCountries(): Observable<string[]> {
+    return this.countryService.getCountries(LSC.EN);
+  }
 }

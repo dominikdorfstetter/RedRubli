@@ -1,1 +1,76 @@
-<p>register works!</p>
+<div class="register-form">
+  <mat-toolbar class="my-header" color="primary">
+    <span>Registration</span>
+  </mat-toolbar>
+  <mat-card class="my-card">
+    <mat-card-content>
+      <form class="my-form">
+        <div class="row">
+          <mat-form-field class="row-element" class="full-width">
+            <mat-label>First Name</mat-label>
+            <input matInput placeholder="First name" name="fname" required>
+          </mat-form-field>
+          <mat-form-field class="row-element" class="full-width">
+            <mat-label>Last Name</mat-label>
+            <input matInput placeholder="Last Name" name="lname" required>
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field class="row-element thirty">
+                <mat-label>Country</mat-label>
+                <mat-select> 
+                  <mat-option *ngFor="let country of countries | async" [value]="country">
+                    {{ country }}
+                  </mat-option>
+                </mat-select>
+          </mat-form-field>
+          <mat-form-field class="row-element thirty">
+            <mat-label>Zip-Code</mat-label>
+            <input matInput placeholder="Zip-Code" name="zipcode" required>
+          </mat-form-field>
+          <mat-form-field class="row-element thirty">
+            <mat-label>City</mat-label>
+            <input matInput placeholder="City" name="city" required>
+          </mat-form-field>
+        </div>
+        <mat-form-field class="full-width">
+          <mat-label>Adress</mat-label>
+          <input matInput placeholder="Adress" name="adress" required>
+        </mat-form-field>
+        <div class="row">
+          <mat-form-field class="row-element full-width">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Email" name="email" required>
+          </mat-form-field>
+          <mat-form-field class="row-element full-width">
+            <mat-label>Phonenumber</mat-label>
+            <input type="number" matInput placeholder="Phonenumber" name="phone" required>
+          </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field class="row-element full-width">
+              <mat-label>Password</mat-label>
+              <input type="password" matInput placeholder="Password" name="password" required>
+            </mat-form-field>
+            <mat-form-field class="row-element full-width">
+              <mat-label>Password again</mat-label>
+              <input type="password" matInput placeholder="Password again" name="password_re" required>
+            </mat-form-field>
+        </div>
+        <hr>
+        <br>
+        <div class="example-section">
+          <mat-radio-group>
+            <mat-radio-button class="radio-margin" value="after">Male</mat-radio-button>
+            <mat-radio-button class="radio-margin" value="before">Female</mat-radio-button>
+            <mat-radio-button class="radio-margin" value="before">Other</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <br>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="secondary">REGISTER</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
