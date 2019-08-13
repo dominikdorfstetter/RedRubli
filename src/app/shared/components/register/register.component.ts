@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CheckService } from '../../services/check.service';
 import { Observable } from 'rxjs';
-import { CountryService, LSC } from '../../services/country.service';
+import { CountryService, LSC, CountrySelect } from '../../services/country.service';
 
 // interface for user input
 interface RegisterFormInput {
@@ -23,7 +23,7 @@ interface RegisterFormInput {
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  public countries: Observable<string[]>;
+  public countries: Observable<CountrySelect[]>;
   public acceptAGB: boolean;
   public birthday: Date;
   public formatEmail: boolean;
@@ -157,7 +157,7 @@ export class RegisterComponent implements OnInit {
   /**
    * Display Countries
    */
-  getCountries(): Observable<string[]> {
+  getCountries(): Observable<CountrySelect[]> {
     return this.countryService.getCountries(LSC.EN);
   }
 }

@@ -6,7 +6,7 @@ import { UserService, LoginCredentials } from '../../services/user.service';
 import { Observable } from 'rxjs';
 import { User } from 'firebase';
 import { FirebaseErrorService } from '../../services/firebase.error.service';
-import { CountryService, LSC } from '../../services/country.service';
+import { CountryService, LSC, CountrySelect } from '../../services/country.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +16,7 @@ import { CountryService, LSC } from '../../services/country.service';
 export class LoginComponent {
   @Input() error: string | null;
   @Output() submitEM = new EventEmitter();
-  public countries: Observable<string[]>;
+  public countries: Observable<CountrySelect[]>;
 
   form: FormGroup = new FormGroup({
     username: new FormControl(''),
@@ -36,7 +36,7 @@ export class LoginComponent {
     this.userService.logOut();
   }
 
-  getCountries(): Observable<string[]> {
+  getCountries(): Observable<CountrySelect[]> {
     return this.countryService.getCountries(LSC.DE);
   }
 

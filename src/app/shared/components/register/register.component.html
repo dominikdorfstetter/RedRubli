@@ -19,8 +19,8 @@
           <mat-form-field class="row-element thirty">
                 <mat-label>Country</mat-label>
                 <mat-select> 
-                  <mat-option *ngFor="let country of countries | async" [value]="country">
-                    {{ country }}
+                  <mat-option *ngFor="let country of countries | async" [value]="country.value">
+                    {{ country.viewValue }}
                   </mat-option>
                 </mat-select>
           </mat-form-field>
