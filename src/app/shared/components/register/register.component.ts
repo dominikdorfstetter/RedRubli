@@ -15,6 +15,10 @@ interface RegisterFormInput {
   password: string;
   password_re: string;
   phone: string;
+  country: CountrySelect;
+  zipcode: string;
+  street: string;
+  city: string;
 }
 
 @Component({
@@ -32,21 +36,28 @@ export class RegisterComponent implements OnInit {
   public formatPassword: boolean;
   public formatBirthday: boolean;
   public formatPhone: boolean;
-  public formatEmailRe: boolean;
+  // public formatEmailRe: boolean;
   public formatGender: boolean;
+  public formatZipCode: boolean;
+  public formatCity: boolean;
+  public formatStreet: boolean;
   
 
   public input: RegisterFormInput = {
     phone: '' as string,
-    password_re: '' as string,
     gender: '' as string,
     title: '' as string,
     email: '' as string,
     email_re: '' as string,
     password: '' as string,
+    password_re: '' as string,
     firstname: '' as string,
     lastname: '' as string,
-    birthday: '' as string
+    birthday: '' as string,
+    country: { value: 'AT', viewValue: 'Austria' } as CountrySelect,
+    zipcode: '' as string,
+    city: '' as string,
+    street: '' as string
   };
 
   constructor(private checkProvider: CheckService, private countryService: CountryService) {
@@ -71,8 +82,11 @@ export class RegisterComponent implements OnInit {
     this.formatPassword = value;
     this.formatBirthday = value;
     this.formatPhone = value;
-    this.formatEmailRe = value;
+    // this.formatEmailRe = value;
     this.formatGender = value;
+    this.formatCity = value;
+    this.formatStreet = value;
+    this.formatZipCode = value;
   }
 
   /**
@@ -82,10 +96,13 @@ export class RegisterComponent implements OnInit {
   validateRegister(userInput: RegisterFormInput): boolean {
     userInput.email = this.trimInput(userInput.email, false);
     userInput.password = this.trimInput(userInput.password, true);
+    userInput.password_re = this.trimInput(userInput.password_re, true);
     userInput.firstname = this.trimInput(userInput.firstname, false);
     userInput.lastname = this.trimInput(userInput.lastname, false);
     userInput.phone = this.trimInput(userInput.phone, false);
-    userInput.email_re = this.trimInput(userInput.email_re, false);
+    userInput.city = this.trimInput(userInput.firstname, false);
+    userInput.street = this.trimInput(userInput.firstname, false);
+    userInput.zipcode = this.trimInput(userInput.firstname, false);
 
     this.setFormValidation(true);
 
@@ -97,9 +114,9 @@ export class RegisterComponent implements OnInit {
       this.formatEmail = false;
     }
 
-    if (!this.checkProvider.checkEmail(userInput.email_re) || userInput.email !== userInput.email_re) {
+    /* if (!this.checkProvider.checkEmail(userInput.email_re) || userInput.email !== userInput.email_re) {
       this.formatEmailRe = false;
-    }
+    } */
 
     if (!this.checkProvider.checkPassword(userInput.password)) {
       this.formatPassword = false;
@@ -113,9 +130,9 @@ export class RegisterComponent implements OnInit {
       this.formatNachname = false;
     }
 
-    if (!userInput.birthday) {
+    /* if (!userInput.birthday) {
       this.formatBirthday = false;
-    }
+    } */
 
     if (!userInput.phone || !this.checkProvider.checkPhoneNumber(userInput.phone)) {
       this.formatPhone = false;
@@ -128,8 +145,11 @@ export class RegisterComponent implements OnInit {
       this.formatNachname &&
       this.formatBirthday &&
       this.formatPhone &&
-      this.formatEmailRe &&
-      this.formatGender
+      // this.formatEmailRe &&
+      this.formatGender &&
+      this.formatCity &&
+      this.formatZipCode &&
+      this.formatStreet
     );
   }
 
