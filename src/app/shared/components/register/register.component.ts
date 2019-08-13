@@ -2,16 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { CheckService } from '../../services/check.service';
 import { Observable } from 'rxjs';
 import { CountryService, LSC, CountrySelect } from '../../services/country.service';
+import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter'
 
 // interface for user input
 interface RegisterFormInput {
   gender: string;
   title: string;
-  email: string;
+  email: string; 
   email_re: string;
   firstname: string;
   lastname: string;
-  birthday: string;
+  birthday: Date;
   password: string;
   password_re: string;
   phone: string;
@@ -24,12 +26,22 @@ interface RegisterFormInput {
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    {provide: MAT_DATE_LOCALE, useValue: 'de-AT'},
+
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
 })
 export class RegisterComponent implements OnInit {
   public countries: Observable<CountrySelect[]>;
   public acceptAGB: boolean;
-  public birthday: Date;
   public formatEmail: boolean;
   public formatVorname: boolean;
   public formatNachname: boolean;
@@ -42,6 +54,7 @@ export class RegisterComponent implements OnInit {
   public formatCity: boolean;
   public formatStreet: boolean;
   
+  public startDate: Date;
 
   public input: RegisterFormInput = {
     phone: '' as string,
@@ -53,7 +66,7 @@ export class RegisterComponent implements OnInit {
     password_re: '' as string,
     firstname: '' as string,
     lastname: '' as string,
-    birthday: '' as string,
+    birthday: undefined,
     country: { value: 'AT', viewValue: 'Austria' } as CountrySelect,
     zipcode: '' as string,
     city: '' as string,
@@ -62,6 +75,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(private checkProvider: CheckService, private countryService: CountryService) {
     this.countries = this.getCountries();
+    this.startDate = new Date(1990, 0, 1);
   }
 
   ngOnInit() {
@@ -146,7 +160,7 @@ export class RegisterComponent implements OnInit {
       this.formatBirthday &&
       this.formatPhone &&
       // this.formatEmailRe &&
-      this.formatGender &&
+      // this.formatGender &&
       this.formatCity &&
       this.formatZipCode &&
       this.formatStreet
@@ -158,7 +172,8 @@ export class RegisterComponent implements OnInit {
    * @param value the value to trim
    * @param trimStartEnd if true replace trailing and leading whitespace; if false replace all
    */
-  private trimInput(value: string, trimStartEnd: boolean): string {
+  private trimInput(value: any, trimStartEnd: boolean): string {
+    value = value.toString();
     return trimStartEnd ? value.trim() : value.replace(/ /g, '');
   }
 
@@ -168,9 +183,9 @@ export class RegisterComponent implements OnInit {
    */
   performRegister(input: RegisterFormInput) {
     if (this.validateRegister(input)) {
-
+      console.log('validated correctly');
     } else {
-
+      console.log('validation failed');
     }
   }
   
