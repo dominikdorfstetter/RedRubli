@@ -5,9 +5,10 @@ import { CountryService, LSC, CountrySelect } from '../../services/country.servi
 import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter'
 import { Moment } from 'moment';
+import { UserService } from '../../services/user.service';
 
 // interface for user input
-interface RegisterFormInput {
+export interface RegisterFormInput {
   gender: string;
   email: string; 
   firstname: string;
@@ -16,7 +17,7 @@ interface RegisterFormInput {
   password: string;
   password_re: string;
   phone: string;
-  country: CountrySelect;
+  country: string;
   zipcode: string;
   street: string;
   city: string;
@@ -70,7 +71,8 @@ export class RegisterComponent implements OnInit {
     street: '' as string
   };
 
-  constructor(private checkProvider: CheckService, private countryService: CountryService) {
+  constructor(private checkProvider: CheckService, private countryService: CountryService,
+              private userService: UserService) {
     this.countries = this.getCountries();
     this.startDate = new Date(1990, 0, 1);
   }
@@ -172,11 +174,11 @@ export class RegisterComponent implements OnInit {
    * Performs register if input data is correct
    * @param input the form input
    */
-  performRegister(input: RegisterFormInput) {
+  async performRegister(input: RegisterFormInput) {
     console.table(input);
 
     if (this.validateRegister(input)) {
-      console.log('validated correctly');
+      return await this.userService.createUserProfile(input);
       // TODO: perform register
     } else {
       console.log('validation failed');

@@ -24,8 +24,7 @@
           <mat-form-field class="row-element thirty">
             <mat-label>Country</mat-label>
             <mat-select [(ngModel)]="input.country" ngDefaultControl [ngModelOptions]="{standalone: true}">
-              <mat-option  *ngFor="let country of countries | async"
-                [value]="country.value" >
+              <mat-option *ngFor="let country of countries | countriesSelect | async" [value]="country.value">
                 {{ country.viewValue }}
               </mat-option>
             </mat-select>
