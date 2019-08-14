@@ -36,6 +36,7 @@ import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CountriesPipe } from './shared/pipes/countries.pipe';
 import { FirestoreDatePipe } from './shared/pipes/firestore.date.pipe';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { FirestoreDatePipe } from './shared/pipes/firestore.date.pipe';
     LoginComponent,
     RegisterComponent,
     CountriesPipe,
-    FirestoreDatePipe
+    FirestoreDatePipe,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
