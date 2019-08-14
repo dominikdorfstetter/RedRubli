@@ -9,24 +9,28 @@ import {
   ReplaySubject,
   Observable,
   of,
-  Subscription
+  Subscription,
+  Subject
 } from 'rxjs';
 import {
   filter,
   switchMap,
+  take,
+  takeUntil,
 } from 'rxjs/operators';
 import {
   User
 } from 'firebase';
 import {
   SnackbarService
-} from '../snackbar.service';
+} from './snackbar.service';
 import {
   AngularFirestore,
   AngularFirestoreDocument
 } from '@angular/fire/firestore';
 import { auth } from  'firebase/app';
-import { CountryService } from './country.service';
+import { LoggerService } from './logger.service';
+import { RegisterFormInput } from '../components/register/register.component';
 
 const userUrl: String = 'users';
 
@@ -37,34 +41,22 @@ export interface LoginCredentials {
   password: string;
 }
 
-export enum GENDER {
-  MALE='m',
-  FEMALE='f',
-  DIVERSE='d'
-}
-
 /*  interface: user profile data
   =============================*/
-export interface ProfileData {
-  title: string;
-  firstname: string;
-  lastname: string;
-  birthday: string;
-  gender: GENDER;
-}
-
-export interface RegisterData {
-  profile: ProfileData;
+export interface UserAccount {
+  uid: string;
+  displayName: string;
+  photoURL: string;
   email: string;
-  password: string;
-  contact: ContactData;
-}
-
-export interface ContactData {
-  country: string;
-  zipcode: number;
+  title?: string;
+  birthday: Date;
+  gender: string;
+  countryCode: string;
+  zipcode: string;
   city: string;
-  street: string;
+  street: string; 
+  phone: string;
+  createdAT?: number;
 }
 
 /**
@@ -79,7 +71,9 @@ export class UserService implements OnInit {
 
   constructor(private afAuth: AngularFireAuth,
     private snackbarService: SnackbarService,
-    private afStore: AngularFirestore) {}
+    private afStore: AngularFirestore,
+    private loggerS: LoggerService,
+    private snackbarS: SnackbarService) {}
 
   ngOnInit(): void {
   }
@@ -103,7 +97,10 @@ export class UserService implements OnInit {
         }),
       ).subscribe(
         (user: User) => {
-          if(!!user) this.user$.next(user);
+          if(!!user) {
+            this.user$.next(user);
+            this.loggerS.logInfo('Successfully performed login.');
+          }
         },
         err => this.user$.next(err),
       );
@@ -167,20 +164,55 @@ export class UserService implements OnInit {
    * set user data on firebase user obj
    * @param profileData Profile data to set on user
    */
-  private updateUserProfile(profileData: ProfileData) {
-    // Sets user data to firestore on login
-/*     const userRef: AngularFirestoreDocument<User> = this.afStore.doc(`${userUrl}/${user.uid}`);
+  public async createUserProfile( profileData: RegisterFormInput) {
+    this.afAuth.auth.createUserWithEmailAndPassword(profileData.email, profileData.password).then(
+      () => {
+        const unsubriber$ = new Subject<boolean>();
 
-    const data = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL
-    } as User;
+        this.afAuth.authState.pipe(takeUntil(unsubriber$)).subscribe(user => {
+          console.log(user);
+          // Sets user data to firestore on login
+          const userRef: AngularFirestoreDocument<UserAccount> = this.afStore.doc(`${userUrl}/${user.uid}`);
 
-    return userRef.set(data, {
-      merge: true
-    }) */
+          console.log(`${userUrl}/${user.uid}`);
+
+          const data: UserAccount = {
+            uid: user.uid,
+            email: user.email,
+            photoURL: user.photoURL,
+            displayName: `${profileData.firstname} ${profileData.lastname}`,
+            gender: profileData.gender,
+            birthday: profileData.birthday.toDate(),
+            zipcode: profileData.zipcode,
+            countryCode: profileData.country,
+            city: profileData.city,
+            street: profileData.street,
+            phone: profileData.phone
+          };
+
+          // write user profile data
+          return userRef.set(data).then(() => {
+            // send email-verification
+            this.sendEmailVerification().then(() => {
+              unsubriber$.next(true);
+            });
+          });
+        })
+      }
+    ).catch(error => {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      if (errorCode == 'auth/weak-password') {
+        this.snackbarS.showSnackBar('Your password is too weak!', 'Dismiss');
+      } else {
+        alert(errorMessage);
+      }
+      console.log(error);
+      return Promise.reject(error);
+    }).finally(() => {
+      console.log('profile created');
+    });
   }
 
   /**

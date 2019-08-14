@@ -9,4 +9,9 @@ export const environment = {
     messagingSenderId: "120480716594",
     appId: "1:120480716594:web:a7c84e40a5debfd4"
   },
+  // the countries your user can choose
+  // shared/pipes/countries.pipe.ts
+  supportedCountries: [
+    'AT', 'DE', 'CH', 'ES', 'IT'
+  ]
 };

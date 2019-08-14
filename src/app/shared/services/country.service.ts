@@ -4,8 +4,14 @@ import { map, shareReplay, tap } from 'rxjs/operators';
 import { FetchService } from './fetch.service';
 import { Serializable } from './serializable';
 
+export interface CountrySelect {
+  value: string;
+  viewValue: string;
+}
+
 export class Country extends Serializable implements CountryInterface {
-  name: string;  topLevelDomain?: string[];
+  name: string;  
+  topLevelDomain?: string[];
   alpha2Code: string;
   alpha3Code: string;
   callingCodes?: string[];
@@ -119,7 +125,6 @@ export class CountryService {
       map(res => {
         return res.map(el => new Country(el));
       }),
-      tap(console.log),
       shareReplay()) as Observable<Country[]>;
   }
 
@@ -127,12 +132,19 @@ export class CountryService {
    * get countries localized as string array
    * @param lsc Language Short Code
    */
-  getCountries(lsc: LSC): Observable<string[]> {
+  getCountries(lsc: LSC): Observable<CountrySelect[]> {
     return this.fetchCountries().pipe(
       // if language is english return country.name
       // if not, return the translation for it
       map((countries: Country[]) => 
-          countries.map((country: Country) => 
-              (lsc === LSC.EN) ? country.name : country.translations[lsc])));
+          countries.map((country: Country) => {
+            const translation = (lsc === LSC.EN) ? country.name : country.translations[lsc];
+            const ret = {
+              value: country.alpha2Code,
+              viewValue: translation
+            } as CountrySelect;
+
+            return ret;
+          })));
   }
 }
