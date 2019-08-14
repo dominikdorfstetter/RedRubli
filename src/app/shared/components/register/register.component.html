@@ -1,94 +1,99 @@
-<div class="register-form">
-  <mat-toolbar class="my-header" color="primary">
-    <span>Registration</span>
-  </mat-toolbar>
-  <mat-card class="my-card">
-    <mat-card-content>
-      <form class="my-form">
-        <div class="row">
-          <mat-form-field class="row-element" class="full-width">
-            <mat-label>First Name</mat-label>
-            <input [(ngModel)]="input.firstname" [ngModelOptions]="{standalone: true}" matInput placeholder="First name"
-              name="input.firstname" required>
-            <mat-error>This field is required</mat-error>
-          </mat-form-field>
-          <mat-form-field class="row-element" class="full-width">
-            <mat-label>Last Name</mat-label>
-            <input [(ngModel)]="input.lastname" [ngModelOptions]="{standalone: true}" matInput placeholder="Last Name"
-              name="input.lastname" required>
-            <mat-error>This field is required</mat-error>
-          </mat-form-field>
-        </div>
-        <br>
-        <div class="row">
-          <mat-form-field class="row-element thirty">
-            <mat-label>Country</mat-label>
-            <mat-select [(ngModel)]="input.country" ngDefaultControl [ngModelOptions]="{standalone: true}">
-              <mat-option *ngFor="let country of countries | countriesSelect | async" [value]="country.value">
-                {{ country.viewValue }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="row-element thirty">
-            <mat-label>Zip-Code</mat-label>
-            <input [(ngModel)]="input.zipcode" type="number" [ngModelOptions]="{standalone: true}" matInput placeholder="Zip-Code"
-              name="input.zipcode" required>
-          </mat-form-field>
-          <mat-form-field class="row-element thirty">
-            <mat-label>City</mat-label>
-            <input [(ngModel)]="input.city" [ngModelOptions]="{standalone: true}" matInput placeholder="City"
-              name="input.city" required>
-          </mat-form-field>
-        </div>
-        <mat-form-field class="full-width">
-          <mat-label>Adress</mat-label>
-          <input [(ngModel)]="input.street" [ngModelOptions]="{standalone: true}" matInput placeholder="Adress"
-            name="input.street" required>
-        </mat-form-field>
-        <div class="row">
-          <mat-form-field class="row-element full-width">
-            <mat-label>Email</mat-label>
-            <input [(ngModel)]="input.email" [ngModelOptions]="{standalone: true}" matInput placeholder="Email"
-              name="input.email" required>
-          </mat-form-field>
-          <mat-form-field class="row-element full-width">
-            <mat-label>Phonenumber</mat-label>
-            <input [(ngModel)]="input.phone" [ngModelOptions]="{standalone: true}" matInput
-              placeholder="Phonenumber" name="input.phone" required>
-          </mat-form-field>
-        </div>
-        <mat-form-field class="thirty">
-          <input [(ngModel)]="input.birthday" [ngModelOptions]="{standalone: true}" matInput [matDatepicker]="picker" placeholder="Date of birth">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker color="primary" touchUi #picker startView="year" [startAt]="startDate"></mat-datepicker>
-        </mat-form-field>
-        <br>
-        <div class="row">
-          <mat-form-field class="row-element full-width">
-            <mat-label>Password</mat-label>
-            <input [(ngModel)]="input.password" type="password" [ngModelOptions]="{standalone: true}" matInput
-              placeholder="Password" name="input.password" required>
-          </mat-form-field>
-          <mat-form-field class="row-element full-width">
-            <mat-label>Password again</mat-label>
-            <input [(ngModel)]="input.password_re" type="password" [ngModelOptions]="{standalone: true}" matInput
-              placeholder="Password again" name="input.password_re" required>
-          </mat-form-field>
-        </div>
-        <hr>
-        <br>
-        <div class="example-section">
-          <mat-radio-group [(ngModel)]="input.gender" ngDefaultControl [ngModelOptions]="{standalone: true}">
-            <mat-radio-button class="radio-margin" value="m">Male</mat-radio-button>
-            <mat-radio-button class="radio-margin" value="f">Female</mat-radio-button>
-            <mat-radio-button class="radio-margin" value="d">Other</mat-radio-button>
-          </mat-radio-group>
-        </div>
-        <br>
-      </form>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button (click)="performRegister(input)" color="secondary">REGISTER</button>
-    </mat-card-actions>
-  </mat-card>
-</div>
+<section>
+  <div class="section content">
+    <div class="register-form">
+      <mat-toolbar class="my-header" color="primary">
+        <span>Registration</span>
+      </mat-toolbar>
+      <mat-card class="my-card">
+        <mat-card-content>
+          <form class="my-form">
+            <div class="row">
+              <mat-form-field class="row-element" class="full-width">
+                <mat-label>First Name</mat-label>
+                <input [(ngModel)]="input.firstname" [ngModelOptions]="{standalone: true}" matInput
+                  placeholder="First name" name="input.firstname" required>
+                <mat-error>This field is required</mat-error>
+              </mat-form-field>
+              <mat-form-field class="row-element" class="full-width">
+                <mat-label>Last Name</mat-label>
+                <input [(ngModel)]="input.lastname" [ngModelOptions]="{standalone: true}" matInput
+                  placeholder="Last Name" name="input.lastname" required>
+                <mat-error>This field is required</mat-error>
+              </mat-form-field>
+            </div>
+            <br>
+            <div class="row">
+              <mat-form-field class="row-element thirty">
+                <mat-label>Country</mat-label>
+                <mat-select [(ngModel)]="input.country" ngDefaultControl [ngModelOptions]="{standalone: true}">
+                  <mat-option *ngFor="let country of countries | countriesSelect | async" [value]="country.value">
+                    {{ country.viewValue }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="row-element thirty">
+                <mat-label>Zip-Code</mat-label>
+                <input [(ngModel)]="input.zipcode" type="number" [ngModelOptions]="{standalone: true}" matInput
+                  placeholder="Zip-Code" name="input.zipcode" required>
+              </mat-form-field>
+              <mat-form-field class="row-element thirty">
+                <mat-label>City</mat-label>
+                <input [(ngModel)]="input.city" [ngModelOptions]="{standalone: true}" matInput placeholder="City"
+                  name="input.city" required>
+              </mat-form-field>
+            </div>
+            <mat-form-field class="full-width">
+              <mat-label>Adress</mat-label>
+              <input [(ngModel)]="input.street" [ngModelOptions]="{standalone: true}" matInput placeholder="Adress"
+                name="input.street" required>
+            </mat-form-field>
+            <div class="row">
+              <mat-form-field class="row-element full-width">
+                <mat-label>Email</mat-label>
+                <input [(ngModel)]="input.email" [ngModelOptions]="{standalone: true}" matInput placeholder="Email"
+                  name="input.email" required>
+              </mat-form-field>
+              <mat-form-field class="row-element full-width">
+                <mat-label>Phonenumber</mat-label>
+                <input [(ngModel)]="input.phone" [ngModelOptions]="{standalone: true}" matInput
+                  placeholder="Phonenumber" name="input.phone" required>
+              </mat-form-field>
+            </div>
+            <mat-form-field class="thirty">
+              <input [(ngModel)]="input.birthday" [ngModelOptions]="{standalone: true}" matInput
+                [matDatepicker]="picker" placeholder="Date of birth">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker color="primary" touchUi #picker startView="year" [startAt]="startDate"></mat-datepicker>
+            </mat-form-field>
+            <br>
+            <div class="row">
+              <mat-form-field class="row-element full-width">
+                <mat-label>Password</mat-label>
+                <input [(ngModel)]="input.password" type="password" [ngModelOptions]="{standalone: true}" matInput
+                  placeholder="Password" name="input.password" required>
+              </mat-form-field>
+              <mat-form-field class="row-element full-width">
+                <mat-label>Password again</mat-label>
+                <input [(ngModel)]="input.password_re" type="password" [ngModelOptions]="{standalone: true}" matInput
+                  placeholder="Password again" name="input.password_re" required>
+              </mat-form-field>
+            </div>
+            <hr>
+            <br>
+            <div class="example-section">
+              <mat-radio-group [(ngModel)]="input.gender" ngDefaultControl [ngModelOptions]="{standalone: true}">
+                <mat-radio-button class="radio-margin" value="m">Male</mat-radio-button>
+                <mat-radio-button class="radio-margin" value="f">Female</mat-radio-button>
+                <mat-radio-button class="radio-margin" value="d">Other</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <br>
+          </form>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button (click)="performRegister(input)" color="secondary">REGISTER</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</section>
