@@ -4,16 +4,15 @@ import { Observable } from 'rxjs';
 import { CountryService, LSC, CountrySelect } from '../../services/country.service';
 import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter'
+import { Moment } from 'moment';
 
 // interface for user input
 interface RegisterFormInput {
   gender: string;
-  title: string;
   email: string; 
-  email_re: string;
   firstname: string;
   lastname: string;
-  birthday: Date;
+  birthday: Moment;
   password: string;
   password_re: string;
   phone: string;
@@ -42,13 +41,13 @@ interface RegisterFormInput {
 export class RegisterComponent implements OnInit {
   public countries: Observable<CountrySelect[]>;
   public acceptAGB: boolean;
+
   public formatEmail: boolean;
   public formatVorname: boolean;
   public formatNachname: boolean;
   public formatPassword: boolean;
   public formatBirthday: boolean;
   public formatPhone: boolean;
-  // public formatEmailRe: boolean;
   public formatGender: boolean;
   public formatZipCode: boolean;
   public formatCity: boolean;
@@ -59,15 +58,13 @@ export class RegisterComponent implements OnInit {
   public input: RegisterFormInput = {
     phone: '' as string,
     gender: '' as string,
-    title: '' as string,
     email: '' as string,
-    email_re: '' as string,
     password: '' as string,
     password_re: '' as string,
     firstname: '' as string,
     lastname: '' as string,
     birthday: undefined,
-    country: { value: 'AT', viewValue: 'Austria' } as CountrySelect,
+    country: undefined,
     zipcode: '' as string,
     city: '' as string,
     street: '' as string
@@ -96,7 +93,6 @@ export class RegisterComponent implements OnInit {
     this.formatPassword = value;
     this.formatBirthday = value;
     this.formatPhone = value;
-    // this.formatEmailRe = value;
     this.formatGender = value;
     this.formatCity = value;
     this.formatStreet = value;
@@ -114,9 +110,9 @@ export class RegisterComponent implements OnInit {
     userInput.firstname = this.trimInput(userInput.firstname, false);
     userInput.lastname = this.trimInput(userInput.lastname, false);
     userInput.phone = this.trimInput(userInput.phone, false);
-    userInput.city = this.trimInput(userInput.firstname, false);
-    userInput.street = this.trimInput(userInput.firstname, false);
-    userInput.zipcode = this.trimInput(userInput.firstname, false);
+    userInput.city = this.trimInput(userInput.city, false);
+    userInput.street = this.trimInput(userInput.street, false);
+    userInput.zipcode = this.trimInput(userInput.zipcode, false);
 
     this.setFormValidation(true);
 
@@ -127,10 +123,6 @@ export class RegisterComponent implements OnInit {
     if (!this.checkProvider.checkEmail(userInput.email)) {
       this.formatEmail = false;
     }
-
-    /* if (!this.checkProvider.checkEmail(userInput.email_re) || userInput.email !== userInput.email_re) {
-      this.formatEmailRe = false;
-    } */
 
     if (!this.checkProvider.checkPassword(userInput.password)) {
       this.formatPassword = false;
@@ -144,9 +136,9 @@ export class RegisterComponent implements OnInit {
       this.formatNachname = false;
     }
 
-    /* if (!userInput.birthday) {
+    if (!userInput.birthday) {
       this.formatBirthday = false;
-    } */
+    }
 
     if (!userInput.phone || !this.checkProvider.checkPhoneNumber(userInput.phone)) {
       this.formatPhone = false;
@@ -159,8 +151,7 @@ export class RegisterComponent implements OnInit {
       this.formatNachname &&
       this.formatBirthday &&
       this.formatPhone &&
-      // this.formatEmailRe &&
-      // this.formatGender &&
+      this.formatGender &&
       this.formatCity &&
       this.formatZipCode &&
       this.formatStreet
@@ -182,10 +173,14 @@ export class RegisterComponent implements OnInit {
    * @param input the form input
    */
   performRegister(input: RegisterFormInput) {
+    console.table(input);
+
     if (this.validateRegister(input)) {
       console.log('validated correctly');
+      // TODO: perform register
     } else {
       console.log('validation failed');
+      // TODO: show errors
     }
   }
   

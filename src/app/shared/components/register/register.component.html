@@ -23,16 +23,16 @@
         <div class="row">
           <mat-form-field class="row-element thirty">
             <mat-label>Country</mat-label>
-            <mat-select>
-              <mat-option [(ngModel)]="input.country" ngDefaultControl *ngFor="let country of countries | async"
-                [value]="country.value" [ngModelOptions]="{standalone: true}">
+            <mat-select [(ngModel)]="input.country" ngDefaultControl [ngModelOptions]="{standalone: true}">
+              <mat-option  *ngFor="let country of countries | async"
+                [value]="country.value" >
                 {{ country.viewValue }}
               </mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field class="row-element thirty">
             <mat-label>Zip-Code</mat-label>
-            <input [(ngModel)]="input.zipcode" [ngModelOptions]="{standalone: true}" matInput placeholder="Zip-Code"
+            <input [(ngModel)]="input.zipcode" type="number" [ngModelOptions]="{standalone: true}" matInput placeholder="Zip-Code"
               name="input.zipcode" required>
           </mat-form-field>
           <mat-form-field class="row-element thirty">
@@ -54,7 +54,7 @@
           </mat-form-field>
           <mat-form-field class="row-element full-width">
             <mat-label>Phonenumber</mat-label>
-            <input [(ngModel)]="input.phone" type="number" [ngModelOptions]="{standalone: true}" matInput
+            <input [(ngModel)]="input.phone" [ngModelOptions]="{standalone: true}" matInput
               placeholder="Phonenumber" name="input.phone" required>
           </mat-form-field>
         </div>
@@ -79,10 +79,10 @@
         <hr>
         <br>
         <div class="example-section">
-          <mat-radio-group>
-            <mat-radio-button class="radio-margin" value="after">Male</mat-radio-button>
-            <mat-radio-button class="radio-margin" value="before">Female</mat-radio-button>
-            <mat-radio-button class="radio-margin" value="before">Other</mat-radio-button>
+          <mat-radio-group [(ngModel)]="input.gender" ngDefaultControl [ngModelOptions]="{standalone: true}">
+            <mat-radio-button class="radio-margin" value="m">Male</mat-radio-button>
+            <mat-radio-button class="radio-margin" value="f">Female</mat-radio-button>
+            <mat-radio-button class="radio-margin" value="d">Other</mat-radio-button>
           </mat-radio-group>
         </div>
         <br>
