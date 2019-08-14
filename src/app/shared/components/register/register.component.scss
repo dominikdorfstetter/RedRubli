@@ -1,0 +1,44 @@
+.my-form {
+  min-width: 150px;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.my-header {
+  font-size: 1.6em;
+  height: 2em;
+
+  span {
+    margin: 0 auto;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+.thirty {
+    width: 33.33%;
+}
+
+.fourty {
+    width: 40%;
+}
+
+.register-form {
+  min-width: 150px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.radio-margin {
+  margin-right: 15px;
+}
+
+.row {
+    display: flex;
+    .row-element {
+        margin: auto;  /* Magic! */
+    }
+}

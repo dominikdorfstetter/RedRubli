@@ -29,11 +29,12 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 /* Multi Touch Support */
 import 'hammerjs';
 
-import { RoutingModule } from './shared/routing.module';
+import { RoutingModule } from './shared/modules/routing.module';
 import { LoginComponent } from './shared/components/login/login.component';
 import { RegisterComponent } from './shared/components/register/register.component';
 import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CountriesPipe } from './shared/pipes/countries.pipe';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DemoComponent,
     StartComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    CountriesPipe
   ],
   imports: [
     BrowserModule,
