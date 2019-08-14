@@ -190,7 +190,13 @@ export class UserService implements OnInit {
             phone: profileData.phone
           };
 
-          return userRef.set(data).then(() => unsubriber$.next(true));
+          // write user profile data
+          return userRef.set(data).then(() => {
+            // send email-verification
+            this.sendEmailVerification().then(() => {
+              unsubriber$.next(true);
+            });
+          });
         })
       }
     ).catch(error => {
