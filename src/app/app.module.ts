@@ -35,6 +35,7 @@ import { RegisterComponent } from './shared/components/register/register.compone
 import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CountriesPipe } from './shared/pipes/countries.pipe';
+import { FirestoreDatePipe } from './shared/pipes/firestore.date.pipe';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { CountriesPipe } from './shared/pipes/countries.pipe';
     StartComponent,
     LoginComponent,
     RegisterComponent,
-    CountriesPipe
+    CountriesPipe,
+    FirestoreDatePipe
   ],
   imports: [
     BrowserModule,
