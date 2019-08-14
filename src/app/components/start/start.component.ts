@@ -12,7 +12,7 @@ export class StartComponent implements OnInit {
   ngOnInit() {
   }
 
-  open() {
+  open(event: any) {
     
   }
 }
