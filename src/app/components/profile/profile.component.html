@@ -1,1 +1,9 @@
-<p>profile works!</p>
+<div *ngIf="(userAccount$ | async) || {}; let user: UserAccount">
+    <h2>Welcome {{user.displayName}}</h2>
+    <h3>JSON of UserProfile data</h3>
+    <div>
+        {{ user | json }}
+    </div>
+</div>
+<hr>
+<button mat-button (click)="signOut()">Log Out</button>

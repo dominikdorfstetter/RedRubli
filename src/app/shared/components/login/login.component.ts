@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angu
 import { FormGroup, FormControl } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { SnackbarService } from '../../services/snackbar.service';
-import { UserService, LoginCredentials } from '../../services/user.service';
+import { UserService, LoginCredentials, UserAccount } from '../../services/user.service';
 import { Observable } from 'rxjs';
 import { User } from 'firebase';
 import { FirebaseErrorService } from '../../services/firebase.error.service';
@@ -10,7 +10,7 @@ import { CountryService, LSC, CountrySelect } from '../../services/country.servi
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
+  templateUrl: './login.component.html', 
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
@@ -32,15 +32,11 @@ export class LoginComponent {
     this.countries = this.getCountries();
   }
 
-  signOut(): void {
-    this.userService.logOut();
-  }
-
   getCountries(): Observable<CountrySelect[]> {
     return this.countryService.getCountries(LSC.DE);
   }
 
-  getUser(): Observable<User> {
+  getUser(): Observable<UserAccount> {
     return this.userService.getUser();
   }
 

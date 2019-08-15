@@ -66,7 +66,7 @@ export interface UserAccount {
   providedIn: 'root'
 })
 export class UserService implements OnInit {
-  private user$: ReplaySubject<User> ;
+  private user$: ReplaySubject<UserAccount> ;
   private userSub: Subscription;
 
   constructor(private afAuth: AngularFireAuth,
@@ -81,7 +81,7 @@ export class UserService implements OnInit {
   /**
    * get user obj from firestore
    */
-  getUser(): Observable<User> {
+  getUser(): Observable<UserAccount> {
     if (!this.user$) {
       this.user$ = new ReplaySubject(1);
       this.userSub = this.afAuth.authState.pipe(
@@ -89,14 +89,14 @@ export class UserService implements OnInit {
         switchMap((user: User) => {
           // user is logged in
           if (user) {
-            return this.afStore.doc<User>(`${userUrl}/${user.uid}`).valueChanges();
+            return this.afStore.doc<UserAccount>(`${userUrl}/${user.uid}`).valueChanges();
           } else {
             // user is logged out
             return of(null);
           }
         }),
       ).subscribe(
-        (user: User) => {
+        (user: UserAccount) => {
           if(!!user) {
             this.user$.next(user);
             this.loggerS.logInfo('Successfully performed login.');
