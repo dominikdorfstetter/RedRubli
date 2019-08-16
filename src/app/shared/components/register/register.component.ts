@@ -21,6 +21,7 @@ export interface RegisterFormInput {
   zipcode: string;
   street: string;
   city: string;
+  username: string;
 }
 
 @Component({
@@ -53,6 +54,7 @@ export class RegisterComponent implements OnInit {
   public formatZipCode: boolean;
   public formatCity: boolean;
   public formatStreet: boolean;
+  public formatUsername: boolean;
   
   public startDate: Date;
 
@@ -68,7 +70,8 @@ export class RegisterComponent implements OnInit {
     country: undefined,
     zipcode: '' as string,
     city: '' as string,
-    street: '' as string
+    street: '' as string,
+    username: '' as string
   };
 
   constructor(private checkProvider: CheckService, private countryService: CountryService,
@@ -146,6 +149,10 @@ export class RegisterComponent implements OnInit {
       this.formatPhone = false;
     }
 
+    this.userService.userNameExists(this.input.username).then(
+      ret => console.log(ret)
+    );
+
     return (
       this.formatPassword &&
       this.formatEmail &&
@@ -156,7 +163,7 @@ export class RegisterComponent implements OnInit {
       this.formatGender &&
       this.formatCity &&
       this.formatZipCode &&
-      this.formatStreet
+      this.formatStreet && false
     );
   }
 
@@ -175,8 +182,6 @@ export class RegisterComponent implements OnInit {
    * @param input the form input
    */
   async performRegister(input: RegisterFormInput) {
-    console.table(input);
-
     if (this.validateRegister(input)) {
       return await this.userService.createUserProfile(input);
       // TODO: perform register

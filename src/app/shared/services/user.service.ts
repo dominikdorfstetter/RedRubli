@@ -17,6 +17,8 @@ import {
   switchMap,
   take,
   takeUntil,
+  map,
+  tap,
 } from 'rxjs/operators';
 import {
   User
@@ -31,6 +33,7 @@ import {
 import { auth } from  'firebase/app';
 import { LoggerService } from './logger.service';
 import { RegisterFormInput } from '../components/register/register.component';
+import { Serializable } from './serializable';
 
 const userUrl: String = 'users';
 
@@ -57,6 +60,7 @@ export interface UserAccount {
   street: string; 
   phone: string;
   createdAT?: number;
+  username: string;
 }
 
 /**
@@ -81,7 +85,7 @@ export class UserService implements OnInit {
   /**
    * get user obj from firestore
    */
-  getUser(): Observable<UserAccount> {
+  public getUser(): Observable<UserAccount> {
     if (!this.user$) {
       this.user$ = new ReplaySubject(1);
       this.userSub = this.afAuth.authState.pipe(
@@ -109,9 +113,38 @@ export class UserService implements OnInit {
   }
 
   /**
+   * Returns observable of user
+   * @param username the username to check
+   */
+  private userNameExists$(username: string): Observable<string[]> {
+    let usersRef = this.afStore.collection(`users`, ref => ref.where('username', '==', username)).valueChanges();
+
+    return usersRef.pipe(map(users => {
+        return users.map((user: UserAccount) => {
+          return !!user.username ? user.username : null;
+        });
+    }));
+  } //WORKS
+
+
+  /**
+   * Does the username already exist?
+   * @param username the username to check
+   */
+  public async userNameExists(username: string): Promise<boolean> {
+    const ret: string[] = await <Promise<string[]>>this.userNameExists$(username).toPromise();
+    console.log(ret[0]); // no return value?
+
+    if(!!ret)
+      return Promise.resolve(false);
+    else
+      return Promise.resolve(true);
+  }
+
+  /**
    * end your current session
    */
-  logOut(): void {
+  public logOut(): void {
     this.afAuth.auth.signOut().then(_ => {
       this.snackbarService.showSnackBar('Hope we will see you soon!', 'Goodbye!');
       this.clearUserObj();
@@ -187,7 +220,8 @@ export class UserService implements OnInit {
             countryCode: profileData.country,
             city: profileData.city,
             street: profileData.street,
-            phone: profileData.phone
+            phone: profileData.phone,
+            username: ''
           };
 
           // write user profile data
@@ -218,7 +252,7 @@ export class UserService implements OnInit {
   /**
    * Google Sign in
    */
-  async googleSignin() {
+  public async googleSignin() {
     this.clearUserObj();
     const provider = new auth.GoogleAuthProvider();
     const credential = await this.afAuth.auth.signInWithPopup(provider);
@@ -228,7 +262,7 @@ export class UserService implements OnInit {
   /**
    * Send email verification link
    */
-  async sendEmailVerification() {
+  public async sendEmailVerification() {
     await this.afAuth.auth.currentUser.sendEmailVerification();
   }
 
@@ -236,7 +270,7 @@ export class UserService implements OnInit {
    * Send password reset email
    * @param passwordResetEmail the email we send the password reset mail to
    */
-  async sendPasswordResetEmail(passwordResetEmail: string) {
+  public async sendPasswordResetEmail(passwordResetEmail: string) {
     return await this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail);
   }
 }
