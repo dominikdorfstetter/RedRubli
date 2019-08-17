@@ -19,6 +19,9 @@ import {
   takeUntil,
   map,
   tap,
+  flatMap,
+  reduce,
+  first,
 } from 'rxjs/operators';
 import {
   User
@@ -34,6 +37,7 @@ import { auth } from  'firebase/app';
 import { LoggerService } from './logger.service';
 import { RegisterFormInput } from '../components/register/register.component';
 import { Serializable } from './serializable';
+import { FirestoreProvider } from './firestore.provider';
 
 const userUrl: String = 'users';
 
@@ -77,7 +81,8 @@ export class UserService implements OnInit {
     private snackbarService: SnackbarService,
     private afStore: AngularFirestore,
     private loggerS: LoggerService,
-    private snackbarS: SnackbarService) {}
+    private snackbarS: SnackbarService,
+    private firestoreP: FirestoreProvider) {}
 
   ngOnInit(): void {
   }
@@ -93,7 +98,7 @@ export class UserService implements OnInit {
         switchMap((user: User) => {
           // user is logged in
           if (user) {
-            return this.afStore.doc<UserAccount>(`${userUrl}/${user.uid}`).valueChanges();
+            return this.firestoreP.doc$(`${userUrl}/${user.uid}`);
           } else {
             // user is logged out
             return of(null);
@@ -116,29 +121,29 @@ export class UserService implements OnInit {
    * Returns observable of user
    * @param username the username to check
    */
-  private userNameExists$(username: string): Observable<string[]> {
-    let usersRef = this.afStore.collection(`users`, ref => ref.where('username', '==', username)).valueChanges();
+  private userNameExists$(username: string): Observable<any> {
+    let usersRef$ = this.firestoreP.col$(`users`, 
+                    ref => ref.where('username', '==', username));
 
-    return usersRef.pipe(map(users => {
-        return users.map((user: UserAccount) => {
-          return !!user.username ? user.username : null;
-        });
-    }));
+    return usersRef$;
   } //WORKS
-
 
   /**
    * Does the username already exist?
    * @param username the username to check
    */
   public async userNameExists(username: string): Promise<boolean> {
-    const ret: string[] = await <Promise<string[]>>this.userNameExists$(username).toPromise();
-    console.log(ret[0]); // no return value?
+    let ret = [];
 
-    if(!!ret)
-      return Promise.resolve(false);
-    else
-      return Promise.resolve(true);
+    await this.userNameExists$(username).pipe(first()).toPromise().then(
+      data => {
+        ret = data;
+      },
+      error => console.error(error)
+    );
+    
+    // if any data is emitted, username exists on a UserAccount
+    return Promise.resolve(!!ret[0] ? true : false);
   }
 
   /**
