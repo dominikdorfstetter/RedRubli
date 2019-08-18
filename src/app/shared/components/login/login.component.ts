@@ -31,6 +31,7 @@ import {
   LSC,
   CountrySelect
 } from '../../services/country.service';
+import { CheckService } from '../../services/check.service';
 
 
 @Component({
@@ -52,7 +53,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private snackbarService: SnackbarService,
     private userService: UserService,
     private fes: FirebaseErrorService,
-    private countryService: CountryService) {
+    private countryService: CountryService,
+    private checkS: CheckService) {
     this.countries = this.getCountries$();
   }
 
@@ -83,11 +85,19 @@ export class LoginComponent implements OnInit, OnDestroy {
         password: this.form.value['password']
       };
 
-      this.userService.logInWithEmailAndPassword(credentials).then(() => {
-        this.snackbarService.showSnackBar('Willkommen.', 'OK');
-      }).catch(err => {
-        this.snackbarService.showSnackBar(this.fes.getTranslation(err.code), 'OK');
-      });
+      if(this.checkS.checkEmail(credentials.username)) {
+        this.userService.logInWithEmailAndPassword(credentials).then(() => {
+          this.snackbarService.showSnackBar('Welcome.', 'OK');
+        }).catch(err => {
+          this.snackbarService.showSnackBar(this.fes.getTranslation(err.code), 'OK');
+        });
+      } else {
+        this.userService.logInWithUsernameAndPassword((credentials)).then(() => {
+          this.snackbarService.showSnackBar('Welcome.', 'OK');
+        }).catch(err => {
+          this.snackbarService.showSnackBar(this.fes.getTranslation(err.code), 'OK');
+        });
+      }
     }
   }
 

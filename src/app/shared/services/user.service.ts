@@ -110,10 +110,14 @@ export class UserService implements OnInit {
     this.clearUserObj();
     const email: string = await this.getEmailByUsername(username);
     if(!!email) {
-      const ret = await this.logInWithEmailAndPassword({username: email, password});
-      return Promise.resolve(ret);
+      const ret = this.logInWithEmailAndPassword({username: email, password}).catch(
+        err => {
+          return Promise.reject(err);
+        }
+      );
+      return ret;
     } else {
-      Promise.reject('auth/noEmailFound');
+      return Promise.reject('auth/noEmailFound');
     }
   }
 
