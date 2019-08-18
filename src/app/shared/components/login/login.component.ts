@@ -1,42 +1,78 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { SnackbarService } from '../../services/snackbar.service';
-import { UserService, LoginCredentials, UserAccount } from '../../services/user.service';
-import { Observable } from 'rxjs';
-import { User } from 'firebase';
-import { FirebaseErrorService } from '../../services/firebase.error.service';
-import { CountryService, LSC, CountrySelect } from '../../services/country.service';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnDestroy
+} from '@angular/core';
+import {
+  FormGroup,
+  FormControl
+} from '@angular/forms';
+import {
+  AngularFireAuth
+} from '@angular/fire/auth';
+import {
+  SnackbarService
+} from '../../services/snackbar.service';
+import {
+  UserService,
+  UserAccount
+} from '../../services/user.service';
+import {
+  Observable
+} from 'rxjs';
+import {
+  FirebaseErrorService
+} from '../../services/firebase.error.service';
+import {
+  CountryService,
+  LSC,
+  CountrySelect
+} from '../../services/country.service';
+
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html', 
+  templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   @Input() error: string | null;
   @Output() submitEM = new EventEmitter();
-  public countries: Observable<CountrySelect[]>;
+  public countries: Observable < CountrySelect[] > ;
 
   form: FormGroup = new FormGroup({
     username: new FormControl(''),
     password: new FormControl(''),
   });
-  
-  constructor(public afAuth: AngularFireAuth, 
-              private snackbarService: SnackbarService, 
-              private userService: UserService,
-              private fes: FirebaseErrorService,
-              private countryService: CountryService) 
-  { 
-    this.countries = this.getCountries();
+
+  constructor(public afAuth: AngularFireAuth,
+    private snackbarService: SnackbarService,
+    private userService: UserService,
+    private fes: FirebaseErrorService,
+    private countryService: CountryService) {
+    this.countries = this.getCountries$();
   }
 
-  getCountries(): Observable<CountrySelect[]> {
+  /**
+   * On Init
+   */
+  ngOnInit(): void {
+  }
+
+  /**
+   * On Destroy
+   */
+  ngOnDestroy(): void {
+  }
+
+  getCountries$(): Observable < CountrySelect[] > {
     return this.countryService.getCountries(LSC.DE);
   }
 
-  getUser(): Observable<UserAccount> {
+  getUser(): Observable < UserAccount > {
     return this.userService.getUser();
   }
 
@@ -45,7 +81,7 @@ export class LoginComponent {
       const credentials = {
         username: this.form.value['username'],
         password: this.form.value['password']
-      } as LoginCredentials;
+      };
 
       this.userService.logInWithEmailAndPassword(credentials).then(() => {
         this.snackbarService.showSnackBar('Willkommen.', 'OK');

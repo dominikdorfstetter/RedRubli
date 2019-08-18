@@ -74,6 +74,10 @@ export class RegisterComponent implements OnInit {
     username: '' as string
   };
 
+  public error: {
+    username: 'Field is required'
+  }
+
   constructor(private checkProvider: CheckService, private countryService: CountryService,
               private userService: UserService) {
     this.countries = this.getCountries();
@@ -102,13 +106,14 @@ export class RegisterComponent implements OnInit {
     this.formatCity = value;
     this.formatStreet = value;
     this.formatZipCode = value;
+    this.formatUsername = value;
   }
 
   /**
    * validates all form data
    * @param userInput the input data from register form
    */
-  validateRegister(userInput: RegisterFormInput): boolean {
+  async validateRegister(userInput: RegisterFormInput): Promise<boolean> {
     userInput.email = this.trimInput(userInput.email, false);
     userInput.password = this.trimInput(userInput.password, true);
     userInput.password_re = this.trimInput(userInput.password_re, true);
@@ -149,15 +154,10 @@ export class RegisterComponent implements OnInit {
       this.formatPhone = false;
     }
 
-    this.userService.userNameExists(this.input.username).then(
-      ret => console.log(ret)
-    );
+    this.formatUsername = await this.userService.userNameExists(this.input.username);
+    this.formatUsername = !this.formatUsername;
 
-    this.userService.getEmailByUsername(this.input.username).then(
-      ret => console.log(ret)
-    )
-
-    return (
+    return Promise.resolve(
       this.formatPassword &&
       this.formatEmail &&
       this.formatVorname &&
@@ -167,8 +167,8 @@ export class RegisterComponent implements OnInit {
       this.formatGender &&
       this.formatCity &&
       this.formatZipCode &&
-      this.formatStreet && false
-    );
+      this.formatStreet &&
+      this.formatUsername);
   }
 
   /**
@@ -186,7 +186,8 @@ export class RegisterComponent implements OnInit {
    * @param input the form input
    */
   async performRegister(input: RegisterFormInput) {
-    if (this.validateRegister(input)) {
+    console.log(await this.validateRegister(input))
+    if (await this.validateRegister(input)) {
       return await this.userService.createUserProfile(input);
       // TODO: perform register
     } else {

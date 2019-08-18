@@ -25,6 +25,7 @@ import { StartComponent } from './components/start/start.component';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirePerformanceModule } from '@angular/fire/performance';
 
 /* Multi Touch Support */
 import 'hammerjs';
@@ -60,6 +61,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     MaterialModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFirePerformanceModule,
     FormsModule,
     ReactiveFormsModule,
     AngularFireAuthModule,

@@ -13,5 +13,6 @@ export const environment = {
   // shared/pipes/countries.pipe.ts
   supportedCountries: [
     'AT', 'DE', 'CH', 'ES', 'IT'
-  ]
+  ],
+  debug: true
 };

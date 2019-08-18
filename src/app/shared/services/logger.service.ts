@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 /**
  * @author Dominik Dorfstetter (dorfstetter@posteo.de)
@@ -31,7 +32,8 @@ export class LoggerService {
   /*  log level debug --> just console
     ================================*/
   public logDebug(message: string): void {
-    console.debug(this.getCurrentTimeAsString() +  ' [DEBUG] - ' + message);
+    if(environment.debug)
+      console.debug(this.getCurrentTimeAsString() +  ' [DEBUG] - ' + message);
   }
 
   /*  get current time as locale string

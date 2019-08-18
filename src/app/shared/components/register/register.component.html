@@ -70,7 +70,7 @@
                 <mat-label>Username</mat-label>
                 <input [(ngModel)]="input.username" [ngModelOptions]="{standalone: true}" matInput placeholder="Username"
                   name="input.username" required>
-                <mat-error>This field is required</mat-error>
+                <mat-error>{{ error.username }}</mat-error>
               </mat-form-field>
               <mat-form-field class="row-element thirty">
                 <input [(ngModel)]="input.birthday" [ngModelOptions]="{standalone: true}" matInput
@@ -78,7 +78,7 @@
                 <mat-error>This field is required</mat-error>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker color="primary" touchUi #picker startView="year" [startAt]="startDate"></mat-datepicker>
-              </mat-form-field>
+              </mat-form-field> 
             </div>
             <br>
             <div class="row">

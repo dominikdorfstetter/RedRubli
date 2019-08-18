@@ -59,6 +59,12 @@ export interface UserAccount {
   street: string; 
   phone: string;
   createdAT?: number;
+  flags?: {
+    registrationCompleted?: boolean,
+    acceptedTerms?: boolean,
+    acceptedTermsTS?: Date,
+    hasAffiliates?: boolean,
+  };
   username: string;
 }
 
@@ -175,6 +181,11 @@ export class UserService implements OnInit {
             birthday: profileData.birthday.toDate(),
             zipcode: profileData.zipcode,
             countryCode: profileData.country,
+            flags: {
+              registrationCompleted: true,
+              acceptedTerms: true,
+              acceptedTermsTS: new Date()
+            },
             city: profileData.city,
             street: profileData.street,
             phone: profileData.phone,
@@ -199,10 +210,7 @@ export class UserService implements OnInit {
       } else {
         alert(errorMessage);
       }
-      console.log(error);
       return Promise.reject(error);
-    }).finally(() => {
-      console.log('profile created');
     });
   }
   
