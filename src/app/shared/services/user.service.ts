@@ -15,12 +15,7 @@ import {
 import {
   filter,
   switchMap,
-  take,
   takeUntil,
-  map,
-  tap,
-  flatMap,
-  reduce,
   first,
 } from 'rxjs/operators';
 import {
@@ -88,62 +83,32 @@ export class UserService implements OnInit {
   }
 
   /**
-   * get user obj from firestore
+   * login with email and password
+   * @param {username, password} LoginCredentials username/email and password
    */
-  public getUser(): Observable<UserAccount> {
-    if (!this.user$) {
-      this.user$ = new ReplaySubject(1);
-      this.userSub = this.afAuth.authState.pipe(
-        // we fetch the real saved user profile from firestore
-        switchMap((user: User) => {
-          // user is logged in
-          if (user) {
-            return this.firestoreP.doc$(`${userUrl}/${user.uid}`);
-          } else {
-            // user is logged out
-            return of(null);
-          }
-        }),
-      ).subscribe(
-        (user: UserAccount) => {
-          if(!!user) {
-            this.user$.next(user);
-            this.loggerS.logInfo('Successfully performed login.');
-          }
-        },
-        err => this.user$.next(err),
-      );
-    }
-    return this.user$.asObservable().pipe(filter(user => !!user));
+  async logInWithEmailAndPassword({username, password}: LoginCredentials) {
+    this.clearUserObj();
+    return await this.afAuth.auth.signInWithEmailAndPassword(username, password)
+      .then(() => {
+        return Promise.resolve();
+      }).catch(err => {
+        return Promise.reject(err);
+      });
   }
-
+  
   /**
-   * Returns observable of user
-   * @param username the username to check
+   * Perform login with email instead of username
+   * @param {username, password} LoginCredentials
    */
-  private userNameExists$(username: string): Observable<any> {
-    let usersRef$ = this.firestoreP.col$(`users`, 
-                    ref => ref.where('username', '==', username));
-
-    return usersRef$;
-  } //WORKS
-
-  /**
-   * Does the username already exist?
-   * @param username the username to check
-   */
-  public async userNameExists(username: string): Promise<boolean> {
-    let ret = [];
-
-    await this.userNameExists$(username).pipe(first()).toPromise().then(
-      data => {
-        ret = data;
-      },
-      error => console.error(error)
-    );
-    
-    // if any data is emitted, username exists on a UserAccount
-    return Promise.resolve(!!ret[0] ? true : false);
+  async logInWithUsernameAndPassword({username, password}: LoginCredentials) {
+    this.clearUserObj();
+    const email: string = await this.getEmailByUsername(username);
+    if(!!email) {
+      const ret = await this.logInWithEmailAndPassword({username: email, password});
+      return Promise.resolve(ret);
+    } else {
+      Promise.reject('auth/noEmailFound');
+    }
   }
 
   /**
@@ -155,21 +120,8 @@ export class UserService implements OnInit {
       this.clearUserObj();
     });
   }
-
-  /**
-   * login with email and password
-   * @param {username, password} Credentials username/email and password
-   */
-  async logInWithEmailAndPassword({username, password}: LoginCredentials) {
-    this.clearUserObj();
-    return await this.afAuth.auth.signInWithEmailAndPassword(username, password)
-      .then(() => {
-        return Promise.resolve();
-      }).catch(err => {
-        return Promise.reject(err);
-      });
-  }
-
+  
+  
   /**
    * clear current userObj
    */
@@ -185,7 +137,7 @@ export class UserService implements OnInit {
   private updateUserData(user) {
     // Sets user data to firestore on login
     const userRef: AngularFirestoreDocument<User> = this.afStore.doc(`${userUrl}/${user.uid}`);
-
+    
     const data = {
       uid: user.uid,
       email: user.email,
@@ -213,7 +165,7 @@ export class UserService implements OnInit {
           const userRef: AngularFirestoreDocument<UserAccount> = this.afStore.doc(`${userUrl}/${user.uid}`);
 
           console.log(`${userUrl}/${user.uid}`);
-
+          
           const data: UserAccount = {
             uid: user.uid,
             email: user.email,
@@ -226,13 +178,13 @@ export class UserService implements OnInit {
             city: profileData.city,
             street: profileData.street,
             phone: profileData.phone,
-            username: ''
+            username: profileData.username
           };
-
+          
           // write user profile data
           return userRef.set(data).then(() => {
             // send email-verification
-            this.sendEmailVerification().then(() => {
+            this.sendEmailVerificationLink().then(() => {
               unsubriber$.next(true);
             });
           });
@@ -253,7 +205,7 @@ export class UserService implements OnInit {
       console.log('profile created');
     });
   }
-
+  
   /**
    * Google Sign in
    */
@@ -263,19 +215,85 @@ export class UserService implements OnInit {
     const credential = await this.afAuth.auth.signInWithPopup(provider);
     return !!credential ? Promise.resolve(this.updateUserData(credential.user)) : Promise.reject();
   }
-
+  
   /**
    * Send email verification link
    */
-  public async sendEmailVerification() {
+  public async sendEmailVerificationLink() {
     await this.afAuth.auth.currentUser.sendEmailVerification();
   }
-
+  
   /**
    * Send password reset email
    * @param passwordResetEmail the email we send the password reset mail to
    */
   public async sendPasswordResetEmail(passwordResetEmail: string) {
     return await this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail);
+  }
+
+  /**
+   * get user obj from firestore
+   */
+  public getUser(): Observable<UserAccount> {
+    if (!this.user$) {
+      this.user$ = new ReplaySubject(1);
+      this.userSub = this.afAuth.authState.pipe(
+        // we fetch the real saved user profile from firestore
+        switchMap((user: User) => {
+          // user is logged in
+          if (user) {
+            return this.firestoreP.doc$<UserAccount>(`${userUrl}/${user.uid}`);
+          } else {
+            // user is logged out
+            return of(null);
+          }
+        }),
+      ).subscribe(
+        (user: UserAccount) => {
+          if(!!user) {
+            this.user$.next(user);
+            this.loggerS.logInfo('Successfully performed login.');
+          }
+        },
+        err => this.user$.next(err),
+      );
+    }
+    return this.user$.asObservable().pipe(filter(user => !!user));
+  }
+  
+  /**
+   * Returns observable of user
+   * @param search the value to search for
+   * @param field what field are we going to search for?
+   */
+  private getUserBy$(search: string, field: string): Observable<UserAccount[]> {
+    let usersRef$: Observable<UserAccount[]> = this.firestoreP.col$<UserAccount>(`users`, 
+                    ref => ref.where(field, '==', search));
+  
+    return usersRef$.pipe(first());
+  } //WORKS
+  
+  /**
+   * Does the username already exist?
+   * @param username the username to check
+   * @returns true if username already exists or false if it doesn't
+   */
+  public async userNameExists(username: string): Promise<boolean> {
+    const ret = await this.getUserBy$(username, 'username').toPromise();
+  
+    // if username exists return true; else false
+    return Promise.resolve(!!ret[0] ? true : false);
+  }
+  
+  /**
+   * Get an emailadress from a username
+   * @param username the username to get the email-address
+   * @returns emailadress that belongs to username or null
+   */
+  public async getEmailByUsername(username: string): Promise<string> {
+    const ret = await this.getUserBy$(username, 'username').toPromise();
+  
+    // if username exists return true; else false
+    return Promise.resolve(!!ret[0] ? ret[0].email : null);
   }
 }

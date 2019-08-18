@@ -153,6 +153,10 @@ export class RegisterComponent implements OnInit {
       ret => console.log(ret)
     );
 
+    this.userService.getEmailByUsername(this.input.username).then(
+      ret => console.log(ret)
+    )
+
     return (
       this.formatPassword &&
       this.formatEmail &&
