@@ -1,3 +1,5 @@
+$primary-color: #90323D;
+
 :host {
   display: flex;
   justify-content: center;
@@ -40,7 +42,7 @@ mat-card-content {
   a {
     text-decoration: none;
     font-weight: 900;
-    color: white;
+    color: $primary-color;
     font-family: 'Open Sans';
 
     &:hover {
@@ -53,3 +55,26 @@ mat-card-content {
   color: white;
   text-align: left;
 }
+
+.my-form {
+  min-width: 150px;
+  max-width: 350px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.my-header {
+  font-size: 1.6em;
+  height: 2em;
+
+  span {
+    margin: 0 auto;
+  }
+}
+
+.login-form {
+  min-width: 150px;
+  max-width: 350px;
+  margin: 0 auto;
+}
+

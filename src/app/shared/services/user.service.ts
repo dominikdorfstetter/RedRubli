@@ -64,6 +64,7 @@ export interface UserAccount {
     acceptedTerms?: boolean,
     acceptedTermsTS?: Date,
     hasAffiliates?: boolean,
+    spentMoney?: boolean,
   };
   username: string;
 }

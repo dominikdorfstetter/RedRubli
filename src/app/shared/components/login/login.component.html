@@ -1,44 +1,39 @@
-<mat-card class="login_window" *ngIf="(getUser() | async) == null; else logout">
-  <mat-card-title>Login</mat-card-title>
-  <mat-card-content>
-    <form [formGroup]="form" (ngSubmit)="submit()">
-      <p>
-        <mat-form-field>
-          <input type="text" matInput placeholder="Username/Email" formControlName="username" required>
-        </mat-form-field>
-        <mat-error class="whiteError">Username or Email is required</mat-error>
-      </p>
-
-      <p>
-        <mat-form-field>
-          <input type="password" matInput placeholder="Password" formControlName="password" required>
-        </mat-form-field>
-        <mat-error class="whiteError">Password is required</mat-error>
-      </p>
-
-      <p *ngIf="error" class="error">
-        {{ error }}
-      </p>
-
-      <div class="button">
-        <button (click)="submit()" mat-raised-button>Login</button>
-      </div>
-      <br/>
-      <div class="button"> 
-        <button (click)="googleSignIn()" mat-raised-button>Sign in with Google</button>
-      </div>
-      <div class="register_text">
-        ... or sign up <a [routerLink]="['/register']">HERE</a>
-      </div>
-    </form>
-  </mat-card-content>
-</mat-card>
-
 <!-- <ul>
   <li *ngFor="let country of countries | async">
     {{ country }}
   </li>
 </ul> -->
+
+<div class="login-form" *ngIf="(getUser() | async) == null; else logout">
+  <mat-toolbar class="my-header" color="primary">
+    <span>Login</span>
+  </mat-toolbar>
+  <mat-card class="my-card">
+    <mat-card-content>
+      <form class="my-form" [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field class="row-element" class="full-width">
+          <mat-label>Username / Email</mat-label>
+          <input formControlName="username" matInput placeholder="Username / Email" name="input.username" required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="row-element" class="full-width">
+          <mat-label>Password</mat-label>
+          <input formControlName="password" matInput placeholder="Password" type="password" name="input.password"
+            required>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="submit()" color="secondary">Sign in</button>
+      <button (click)="googleSignIn()" mat-raised-button>Google Sign in</button>
+      <div class="register_text">
+        <a [routerLink]="['/register']">Register now!</a>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
 
 <ng-template #logout>
   <!-- <code>Hello {{ getUser() | async | json }}</code> -->
