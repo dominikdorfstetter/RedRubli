@@ -44,6 +44,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   @Output() submitEM = new EventEmitter();
   public countries: Observable < CountrySelect[] > ;
 
+  public input = {
+    username: '',
+    password: '',
+  }
+
   form: FormGroup = new FormGroup({
     username: new FormControl(''),
     password: new FormControl(''),
