@@ -9,6 +9,7 @@ export const environment = {
     messagingSenderId: "120480716594",
     appId: "1:120480716594:web:a7c84e40a5debfd4"
   },
+  stripe: 'pk_test_JxqHG4Z2SdoRBpqp9mGDPnP2',
   // the countries your user can choose
   // shared/pipes/countries.pipe.ts
   supportedCountries: [
