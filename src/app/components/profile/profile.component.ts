@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 
 /* stripe */
 import { StripeScriptTag } from 'stripe-angular';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -13,7 +14,7 @@ import { StripeScriptTag } from 'stripe-angular';
 })
 export class ProfileComponent implements OnInit {
   public userAccount$: Observable<UserAccount>;
-  private publishableKey: string = "pk_test_JxqHG4Z2SdoRBpqp9mGDPnP2";
+  private publishableKey: string = environment.stripe;
 
 
   constructor(private userS: UserService, 
