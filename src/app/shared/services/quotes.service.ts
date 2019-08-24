@@ -51,7 +51,7 @@ export class QuotesService {
     return this.lastQuote$.value;
   }
 
-  public getNewQuote() {
+  public getQuoteOfTheDay() {
     this.fetchQuoteOfTheDay().subscribe(
       (quote: Quote) => {
         this.lastQuote$.next(quote);

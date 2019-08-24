@@ -10,7 +10,7 @@ import { Quote } from '../../shared/services/quotes.service';
 export class StartComponent implements OnInit {
 
   constructor(private quoteS: QuotesService) {
-    this.nextQuote();
+    this.quoteS.getQuoteOfTheDay();
   }
 
   ngOnInit() {
@@ -22,9 +22,5 @@ export class StartComponent implements OnInit {
 
   get quoteOfTheDay(): Quote {
     return this.quoteS.quote;
-  }
-
-  public nextQuote(): void {
-    this.quoteS.getNewQuote();
   }
 }
