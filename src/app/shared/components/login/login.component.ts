@@ -94,12 +94,14 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.userService.logInWithEmailAndPassword(credentials).then(() => {
           this.snackbarService.showSnackBar('Welcome.', 'OK');
         }).catch(err => {
+          console.error(err);
           this.snackbarService.showSnackBar(this.fes.getTranslation(err.code), 'OK');
         });
       } else {
         this.userService.logInWithUsernameAndPassword((credentials)).then(() => {
           this.snackbarService.showSnackBar('Welcome.', 'OK');
         }).catch(err => {
+          console.error(err);
           this.snackbarService.showSnackBar(this.fes.getTranslation(err.code), 'OK');
         });
       }
@@ -110,4 +112,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.userService.googleSignin();
   }
 
+  get isLoggedIn(): boolean {
+    return this.userService.loggedIn;
+  }
 }

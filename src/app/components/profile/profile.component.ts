@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService, UserAccount } from 'src/app/shared/services/user.service';
-import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+
+/* stripe */
+import { StripeScriptTag } from 'stripe-angular';
 
 @Component({
   selector: 'app-profile',
@@ -11,9 +13,13 @@ import { tap } from 'rxjs/operators';
 })
 export class ProfileComponent implements OnInit {
   public userAccount$: Observable<UserAccount>;
+  private publishableKey: string = "pk_test_JxqHG4Z2SdoRBpqp9mGDPnP2";
 
-  constructor(private userS: UserService, private snackbarS: SnackbarService) {
+
+  constructor(private userS: UserService, 
+              public StripeScriptTag: StripeScriptTag) {
     this.userAccount$ = this.getUserAccount();
+    this.StripeScriptTag.setPublishableKey(this.publishableKey);
   }
 
   ngOnInit() {

@@ -4,7 +4,7 @@
   </li>
 </ul> -->
 
-<div class="login-form" *ngIf="(getUser() | async) == null; else logout">
+<div class="login-form" *ngIf="!isLoggedIn; else logout">
   <mat-toolbar class="my-header" color="primary">
     <span>Login</span>
   </mat-toolbar>
