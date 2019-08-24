@@ -1,8 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { CountrySelect } from '../services/country.service';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Pipe({
   name: 'countriesSelect'

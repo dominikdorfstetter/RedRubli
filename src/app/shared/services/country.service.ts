@@ -1,8 +1,20 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map, shareReplay, tap } from 'rxjs/operators';
-import { FetchService } from './fetch.service';
-import { Serializable } from './serializable';
+import {
+  Injectable
+} from '@angular/core';
+import {
+  Observable
+} from 'rxjs';
+import {
+  map,
+  shareReplay,
+  tap
+} from 'rxjs/operators';
+import {
+  FetchService
+} from './fetch.service';
+import {
+  Serializable
+} from './serializable';
 
 export interface CountrySelect {
   value: string;
@@ -10,29 +22,29 @@ export interface CountrySelect {
 }
 
 export class Country extends Serializable implements CountryInterface {
-  name: string;  
-  topLevelDomain?: string[];
+  name: string;
+  topLevelDomain ? : string[];
   alpha2Code: string;
   alpha3Code: string;
-  callingCodes?: string[];
+  callingCodes ? : string[];
   capital: string;
-  altSpellings?: string[];
+  altSpellings ? : string[];
   region: string;
   subregion: string;
   population: number;
-  latlng?: number[];
+  latlng ? : number[];
   demonym: string;
   area: number;
   gini: number;
-  timezones?: string[];
-  borders?: string[];
+  timezones ? : string[];
+  borders ? : string[];
   nativeName: string;
   numericCode: string;
-  currencies?: CurrenciesEntity[];
-  languages?: LanguagesEntity[];
+  currencies ? : CurrenciesEntity[];
+  languages ? : LanguagesEntity[];
   translations: Translations;
   flag: string;
-  regionalBlocs?: RegionalBlocsEntity[];
+  regionalBlocs ? : RegionalBlocsEntity[];
   cioc: string;
 }
 
@@ -40,28 +52,28 @@ export class Country extends Serializable implements CountryInterface {
   ==============================*/
 export interface CountryInterface {
   name: string;
-  topLevelDomain?: string[];
+  topLevelDomain ? : string[];
   alpha2Code: string;
   alpha3Code: string;
-  callingCodes?: string[];
+  callingCodes ? : string[];
   capital: string;
-  altSpellings?: string[];
+  altSpellings ? : string[];
   region: string;
   subregion: string;
   population: number;
-  latlng?: number[];
+  latlng ? : number[];
   demonym: string;
   area: number;
   gini: number;
-  timezones?: string[];
-  borders?: string[];
+  timezones ? : string[];
+  borders ? : string[];
   nativeName: string;
   numericCode: string;
-  currencies?: CurrenciesEntity[];
-  languages?: LanguagesEntity[];
+  currencies ? : CurrenciesEntity[];
+  languages ? : LanguagesEntity[];
   translations: Translations;
   flag: string;
-  regionalBlocs?: RegionalBlocsEntity[];
+  regionalBlocs ? : RegionalBlocsEntity[];
   cioc: string;
 }
 
@@ -91,17 +103,17 @@ export interface Translations {
 export interface RegionalBlocsEntity {
   acronym: string;
   name: string;
-  otherAcronyms?: (string);
-  otherNames?: (string);
+  otherAcronyms ? : (string);
+  otherNames ? : (string);
 }
 
 /*  language short codes
   =======================*/
 export enum LSC {
-  DE='de',
-  FR='fr',
-  EN='en',
-  ES='es'
+  DE = 'de',
+  FR = 'fr',
+  EN = 'en',
+  ES = 'es'
 }
 
 const API_URL = 'https://restcountries.eu/rest/v2/all';
@@ -114,37 +126,37 @@ const API_URL = 'https://restcountries.eu/rest/v2/all';
 })
 export class CountryService {
 
-  constructor(private fetchService: FetchService) { }
+  constructor(private fetchService: FetchService) {}
 
 
   /** fetch countries from API
    *  @returns Observable<Country[]> Observable of countries
    */
-  fetchCountries(): Observable<Country[]> {
+  fetchCountries(): Observable < Country[] > {
     return this.fetchService.fetchJSON(API_URL).pipe(
       map(res => {
         return res.map(el => new Country(el));
       }),
-      shareReplay()) as Observable<Country[]>;
+      shareReplay()) as Observable < Country[] > ;
   }
 
   /**
    * get countries localized as string array
    * @param lsc Language Short Code
    */
-  getCountries(lsc: LSC): Observable<CountrySelect[]> {
+  getCountries(lsc: LSC): Observable < CountrySelect[] > {
     return this.fetchCountries().pipe(
       // if language is english return country.name
       // if not, return the translation for it
-      map((countries: Country[]) => 
-          countries.map((country: Country) => {
-            const translation = (lsc === LSC.EN) ? country.name : country.translations[lsc];
-            const ret = {
-              value: country.alpha2Code,
-              viewValue: translation
-            } as CountrySelect;
+      map((countries: Country[]) =>
+        countries.map((country: Country) => {
+          const translation = (lsc === LSC.EN) ? country.name : country.translations[lsc];
+          const ret = {
+            value: country.alpha2Code,
+            viewValue: translation
+          } as CountrySelect;
 
-            return ret;
-          })));
+          return ret;
+        })));
   }
 }
