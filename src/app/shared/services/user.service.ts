@@ -365,7 +365,7 @@ export class UserService {
             return this.firestoreP.doc$<UserAccount>(`${userUrl}/${user.uid}`);
           } else {
             // user is logged out
-            return of(null);
+            return of(undefined);
           }
         }),
       ).subscribe(

@@ -39,6 +39,6 @@ export class LoggerService {
   /*  get current time as locale string
     ===================================*/
   private getCurrentTimeAsString = () => {
-    return new Date().toLocaleDateString();  
+    return new Date().toLocaleString();  
   }
 }
