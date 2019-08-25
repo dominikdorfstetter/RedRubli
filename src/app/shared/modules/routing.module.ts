@@ -5,15 +5,15 @@ import { PageNotFoundComponent } from '../../components/page-not-found/page-not-
 import { StartComponent } from '../../components/start/start.component';
 import { DemoComponent } from '../../components/demo/demo.component';
 import { AboutComponent } from '../../components/about/about.component';
-import { canActivate, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { ProfileComponent } from 'src/app/components/profile/profile.component';
 import { RegisterComponent } from 'src/app/shared/components/register/register.component';
+import { AdminGuard } from '../guards/admin.guard';
 
 
 const routes: Routes = [
   { path: 'home', component: StartComponent, pathMatch: 'full'},
-  { path: 'demo', component: DemoComponent, pathMatch: 'full', ...canActivate(redirectUnauthorizedTo(['home']))},
+  { path: 'demo', component: DemoComponent, pathMatch: 'full', canActivate: [AdminGuard]},
   { path: 'about', component: AboutComponent, pathMatch: 'full'},
   { path: 'register', component: RegisterComponent, pathMatch: 'full'},
   { path: 'profile', component: ProfileComponent, pathMatch: 'full'},
