@@ -18,8 +18,9 @@ export class AdminGuard implements CanActivate {
       map(user => {
         return !!user && user.roles.admin ? true : false
       }),
-      tap((isSales: boolean) => {
-        if(!isSales) {
+      tap((isAdmin: boolean) => {
+        console.log(isAdmin);
+        if(!isAdmin) {
           this.logS.logError('Access denied, admins only');
         }
       })

@@ -18,8 +18,8 @@ export class CustomerGuard implements CanActivate  {
       map(user => {
         return !!user && user.roles.customer ? true : false
       }),
-      tap((isSales: boolean) => {
-        if(!isSales) {
+      tap((isCustomer: boolean) => {
+        if(!isCustomer) {
           this.logS.logError('Access denied, customers only');
         }
       })

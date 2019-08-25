@@ -361,7 +361,7 @@ export class UserService {
         // we fetch the real saved user profile from firestore
         switchMap((user: User) => {
           // user is logged in
-          if (user) {
+          if (!!user) {
             return this.firestoreP.doc$<UserAccount>(`${userUrl}/${user.uid}`);
           } else {
             // user is logged out
@@ -373,12 +373,14 @@ export class UserService {
           if(!!user) {
             this.userAccount$.next(user);
             this.loggerS.logInfo('Successfully performed login.');
+          } else {
+            this.userAccount$.next(null);
           }
         },
         err => this.userAccount$.next(err),
       );
     }
-    return this.userAccount$.asObservable().pipe(filter(user => !!user));
+    return this.userAccount$.asObservable();
   }
   
   /**
