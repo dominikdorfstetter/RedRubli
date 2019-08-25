@@ -39,7 +39,7 @@ import { CheckService } from '../../services/check.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent {
   @Input() error: string | null;
   @Output() submitEM = new EventEmitter();
   public countries: Observable < CountrySelect[] > ;
@@ -63,18 +63,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.countries = this.getCountries$();
   }
 
-  /**
-   * On Init
-   */
-  ngOnInit(): void {
-  }
-
-  /**
-   * On Destroy
-   */
-  ngOnDestroy(): void {
-  }
-
   getCountries$(): Observable < CountrySelect[] > {
     return this.countryService.getCountries(LSC.DE);
   }
@@ -90,16 +78,20 @@ export class LoginComponent implements OnInit, OnDestroy {
         password: this.form.value['password']
       };
 
+      this.resetFields();
+
       if(this.checkS.checkEmail(credentials.username)) {
         this.userService.logInWithEmailAndPassword(credentials).then(() => {
           this.snackbarService.showSnackBar('Welcome.', 'OK');
         }).catch(err => {
+          console.error(err);
           this.snackbarService.showSnackBar(this.fes.getTranslation(err.code), 'OK');
         });
       } else {
         this.userService.logInWithUsernameAndPassword((credentials)).then(() => {
           this.snackbarService.showSnackBar('Welcome.', 'OK');
         }).catch(err => {
+          console.error(err);
           this.snackbarService.showSnackBar(this.fes.getTranslation(err.code), 'OK');
         });
       }
@@ -110,4 +102,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.userService.googleSignin();
   }
 
+  get isLoggedIn(): boolean {
+    return this.userService.loggedIn;
+  }
+
+  private resetFields(): void {
+    this.form.value['username'] = '';
+    this.form.value['password'] = '';
+  }
 }

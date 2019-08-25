@@ -7,6 +7,7 @@ import {
 } from '@angular/fire/auth';
 import {
   ReplaySubject,
+  BehaviorSubject,
   Observable,
   of,
   Subscription,
@@ -31,16 +32,25 @@ import {
 import { auth } from  'firebase/app';
 import { LoggerService } from './logger.service';
 import { RegisterFormInput } from '../components/register/register.component';
-import { Serializable } from './serializable';
 import { FirestoreProvider } from './firestore.provider';
 
 const userUrl: String = 'users';
+const tokenName = 'auth_token';
 
 /*  interface: login credentials
   =============================*/
 export interface LoginCredentials {
   username: string;
   password: string;
+}
+
+/*  Roles
+  =======*/
+export interface Roles {
+  admin?: boolean;
+  editor?: boolean;
+  customer?: boolean;
+  sales?: boolean;
 }
 
 /*  interface: user profile data
@@ -59,6 +69,7 @@ export interface UserAccount {
   street: string; 
   phone: string;
   createdAT?: number;
+  roles: Roles;
   flags?: {
     registrationCompleted?: boolean,
     acceptedTerms?: boolean,
@@ -76,8 +87,10 @@ export interface UserAccount {
   providedIn: 'root'
 })
 export class UserService implements OnInit {
-  private user$: ReplaySubject<UserAccount> ;
+  private userAccount$: ReplaySubject<UserAccount> ;
+  private user = { username: undefined, email: undefined };
   private userSub: Subscription;
+  private isLogged$ = new BehaviorSubject(false);
 
   constructor(private afAuth: AngularFireAuth,
     private snackbarService: SnackbarService,
@@ -89,16 +102,61 @@ export class UserService implements OnInit {
   ngOnInit(): void {
   }
 
+
+  /**
+   * is user logged in?
+   */
+  public get loggedIn(): boolean {
+    return this.isLogged$.value;
+  }
+
+  /**
+   * get firebase auth token
+   */
+  public get authToken(): auth.UserCredential {
+    return JSON.parse(localStorage.getItem(tokenName));
+  }
+
+  /**
+   * send current user or load data from backend using token
+   */
+  public get userData(): Observable<any> {
+    return this.loadUser();
+  }
+
+  /**
+   * Load basic user information
+   */
+  private loadUser(): Observable<any> {
+    if (localStorage.getItem('uid') && localStorage.getItem('email')) {
+      this.user = {
+        username: localStorage.getItem('uid'),
+        email: localStorage.getItem('email'),
+      };
+    }
+    return of(this.user);
+  }
+
   /**
    * login with email and password
    * @param {username, password} LoginCredentials username/email and password
    */
   async logInWithEmailAndPassword({username, password}: LoginCredentials) {
-    this.clearUserObj();
+    // this.clearUserObj();
     return await this.afAuth.auth.signInWithEmailAndPassword(username, password)
-      .then(() => {
+      .then(async (credentials: auth.UserCredential) => {
+          const jwt_token = await credentials.user.getIdToken();
+
+          localStorage.setItem(tokenName, jwt_token);
+          
+          // only for example
+          localStorage.setItem('uid', credentials.user.uid);
+          localStorage.setItem('email', credentials.user.email);
+          localStorage.setItem('displayName', credentials.user.displayName);
+          this.isLogged$.next(true);
         return Promise.resolve();
       }).catch(err => {
+        console.log(err);
         return Promise.reject(err);
       });
   }
@@ -108,7 +166,7 @@ export class UserService implements OnInit {
    * @param {username, password} LoginCredentials
    */
   async logInWithUsernameAndPassword({username, password}: LoginCredentials) {
-    this.clearUserObj();
+    // this.clearUserObj();
     const email: string = await this.getEmailByUsername(username);
     if(!!email) {
       const ret = this.logInWithEmailAndPassword({username: email, password}).catch(
@@ -128,6 +186,7 @@ export class UserService implements OnInit {
   public logOut(): void {
     this.afAuth.auth.signOut().then(_ => {
       this.snackbarService.showSnackBar('Hope we will see you soon!', 'Goodbye!');
+      this.isLogged$.next(false);
       this.clearUserObj();
     });
   }
@@ -137,9 +196,9 @@ export class UserService implements OnInit {
    * clear current userObj
    */
   private clearUserObj(): void {
-    if (this.user$) this.user$.complete();
+    if (this.userAccount$) this.userAccount$.complete();
     this.userSub.unsubscribe();
-    this.user$ = undefined;
+    this.userAccount$ = undefined;
   }
 
   /**
@@ -171,7 +230,6 @@ export class UserService implements OnInit {
         const unsubriber$ = new Subject<boolean>();
 
         this.afAuth.authState.pipe(takeUntil(unsubriber$)).subscribe(user => {
-          console.log(user);
           // Sets user data to firestore on login
           const userRef: AngularFirestoreDocument<UserAccount> = this.afStore.doc(`${userUrl}/${user.uid}`);
 
@@ -186,6 +244,9 @@ export class UserService implements OnInit {
             birthday: profileData.birthday.toDate(),
             zipcode: profileData.zipcode,
             countryCode: profileData.country,
+            roles: {
+              customer: true
+            },
             flags: {
               registrationCompleted: true,
               acceptedTerms: true,
@@ -223,7 +284,7 @@ export class UserService implements OnInit {
    * Google Sign in
    */
   public async googleSignin() {
-    this.clearUserObj();
+    // this.clearUserObj();
     const provider = new auth.GoogleAuthProvider();
     const credential = await this.afAuth.auth.signInWithPopup(provider);
     return !!credential ? Promise.resolve(this.updateUserData(credential.user)) : Promise.reject();
@@ -248,8 +309,8 @@ export class UserService implements OnInit {
    * get user obj from firestore
    */
   public getUser(): Observable<UserAccount> {
-    if (!this.user$) {
-      this.user$ = new ReplaySubject(1);
+    if (!this.userAccount$) {
+      this.userAccount$ = new ReplaySubject(1);
       this.userSub = this.afAuth.authState.pipe(
         // we fetch the real saved user profile from firestore
         switchMap((user: User) => {
@@ -264,14 +325,14 @@ export class UserService implements OnInit {
       ).subscribe(
         (user: UserAccount) => {
           if(!!user) {
-            this.user$.next(user);
+            this.userAccount$.next(user);
             this.loggerS.logInfo('Successfully performed login.');
           }
         },
-        err => this.user$.next(err),
+        err => this.userAccount$.next(err),
       );
     }
-    return this.user$.asObservable().pipe(filter(user => !!user));
+    return this.userAccount$.asObservable().pipe(filter(user => !!user));
   }
   
   /**

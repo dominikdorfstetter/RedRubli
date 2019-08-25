@@ -87,13 +87,16 @@
                 <mat-label>Password</mat-label>
                 <input [(ngModel)]="input.password" type="password" [ngModelOptions]="{standalone: true}" matInput
                   placeholder="Password" name="input.password" required>
+                <mat-error>This field is required</mat-error>
               </mat-form-field>
               <mat-form-field class="row-element full-width">
                 <mat-label>Password again</mat-label>
                 <input [(ngModel)]="input.password_re" type="password" [ngModelOptions]="{standalone: true}" matInput
                   placeholder="Password again" name="input.password_re" required>
+                <mat-error>This field is required</mat-error>
               </mat-form-field>
             </div>
+            <br>
             <hr>
             <br>
             <div class="example-section">
@@ -104,6 +107,11 @@
               </mat-radio-group>
             </div>
             <br>
+            <hr>
+            <br>
+            <div>
+              By completing the registration, you accept our <b>terms & services</b>.
+            </div>
           </form>
         </mat-card-content>
         <mat-card-actions>

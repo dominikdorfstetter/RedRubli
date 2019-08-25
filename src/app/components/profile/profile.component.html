@@ -4,6 +4,7 @@
     <div>
         {{ user | json }}
     </div>
+    <app-payment [customer_meta]="user"></app-payment>
+    <button mat-button (click)="signOut()">Log Out</button>
 </div>
 <hr>
-<button mat-button (click)="signOut()">Log Out</button>
