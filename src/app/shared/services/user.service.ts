@@ -1,6 +1,5 @@
 import {
-  Injectable,
-  OnInit
+  Injectable
 } from '@angular/core';
 import {
   AngularFireAuth
@@ -18,6 +17,7 @@ import {
   switchMap,
   takeUntil,
   first,
+  map,
 } from 'rxjs/operators';
 import {
   User
@@ -33,6 +33,7 @@ import { auth } from  'firebase/app';
 import { LoggerService } from './logger.service';
 import { RegisterFormInput } from '../components/register/register.component';
 import { FirestoreProvider } from './firestore.provider';
+import { Serializable } from './serializable';
 
 const userUrl: String = 'users';
 const tokenName = 'auth_token';
@@ -42,6 +43,11 @@ const tokenName = 'auth_token';
 export interface LoginCredentials {
   username: string;
   password: string;
+}
+
+class UserAuth extends Serializable {
+  username: string;
+  email: string;
 }
 
 /*  Roles
@@ -203,7 +209,6 @@ export class UserService {
           this.isLogged$.next(true);
         return Promise.resolve();
       }).catch(err => {
-        console.log(err);
         return Promise.reject(err);
       });
   }
@@ -278,8 +283,6 @@ export class UserService {
         this.afAuth.authState.pipe(takeUntil(unsubriber$)).subscribe(user => {
           // Sets user data to firestore on login
           const userRef: AngularFirestoreDocument<UserAccount> = this.afStore.doc(`${userUrl}/${user.uid}`);
-
-          console.log(`${userUrl}/${user.uid}`);
           
           const data: UserAccount = {
             uid: user.uid,
@@ -384,15 +387,19 @@ export class UserService {
   }
   
   /**
-   * Returns observable of user
+   * Returns observable of UserAuth
    * @param search the value to search for
    * @param field what field are we going to search for?
    */
-  private getUserBy$(search: string, field: string): Observable<UserAccount[]> {
-    let usersRef$: Observable<UserAccount[]> = this.firestoreP.col$<UserAccount>(`users`, 
+  private getAuthBy$(search: string, field: string): Observable<UserAuth[]> {
+    let usersRef$: Observable<UserAuth[]> = this.firestoreP.col$<UserAuth>(`usernameHasMail`, 
                     ref => ref.where(field, '==', search));
   
-    return usersRef$.pipe(first());
+    return usersRef$.pipe(first(), map(data => {
+      return data.map(element => {
+        return new UserAuth(element);
+      });
+    }));
   } //WORKS
   
   /**
@@ -401,7 +408,7 @@ export class UserService {
    * @returns true if username already exists or false if it doesn't
    */
   public async userNameExists(username: string): Promise<boolean> {
-    const ret = await this.getUserBy$(username, 'username').toPromise();
+    const ret = await this.getAuthBy$(username, 'username').toPromise();
   
     // if username exists return true; else false
     return Promise.resolve(!!ret[0] ? true : false);
@@ -413,7 +420,7 @@ export class UserService {
    * @returns emailadress that belongs to username or null
    */
   public async getEmailByUsername(username: string): Promise<string> {
-    const ret = await this.getUserBy$(username, 'username').toPromise();
+    const ret = await this.getAuthBy$(username, 'username').toPromise();
   
     // if username exists return true; else false
     return Promise.resolve(!!ret[0] ? ret[0].email : null);
