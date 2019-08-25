@@ -14,3 +14,4 @@ export const todo = tod0.crud_todo;
 // USER Functions
 export const onUserCreate = user.onUserCreate;
 export const onUserDelete = user.onUserDelete;
+export const onUserUpdate = user.updateUser;
