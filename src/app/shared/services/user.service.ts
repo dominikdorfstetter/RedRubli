@@ -86,7 +86,7 @@ export interface UserAccount {
 @Injectable({
   providedIn: 'root'
 })
-export class UserService implements OnInit {
+export class UserService {
   private userAccount$: ReplaySubject<UserAccount> ;
   private user = { username: undefined, email: undefined };
   private userSub: Subscription;
@@ -99,9 +99,56 @@ export class UserService implements OnInit {
     private snackbarS: SnackbarService,
     private firestoreP: FirestoreProvider) {}
 
-  ngOnInit(): void {
+  /**
+   * Checks if the user is allowed to perform an action
+   * @param allowedRoles (An array with allowed roles for a specific task)
+   * @param user (The useraccount to check)
+   */
+  public checkAuthorization(user: UserAccount, allowedRoles: string[]): boolean {
+    if(!!user) {
+      // loop over allowed roles array and return true if a role is found
+      allowedRoles.map(role => {
+        if(user.roles[role]) {
+          return true;
+        }
+      });
+      return false;
+    } else {
+      return false;
+    }
   }
 
+  /**
+   * Checks if user has read permissions
+   */
+  public canRead(user: UserAccount) {
+    const allowed = ['admin', 'sales', 'customer', 'editor'];
+    return this.checkAuthorization(user, allowed);
+  }
+
+  /**
+   * Checks if user has edit permissions
+   */
+  public canEdit(user: UserAccount) {
+    const allowed = ['admin', 'editor'];
+    return this.checkAuthorization(user, allowed);
+  }
+
+  /**
+   * checks if user can create a payment plan
+   */
+  public canCreatePaymentPlans(user: UserAccount) {
+    const allowed = ['admin', 'sales'];
+    return this.checkAuthorization(user, allowed);
+  }
+
+  /**
+   * checks if user has godlike powers
+   */
+  public canSudo(user: UserAccount) {
+    const allowed = ['admin'];
+    return this.checkAuthorization(user, allowed);
+  }
 
   /**
    * is user logged in?
@@ -190,7 +237,6 @@ export class UserService implements OnInit {
       this.clearUserObj();
     });
   }
-  
   
   /**
    * clear current userObj

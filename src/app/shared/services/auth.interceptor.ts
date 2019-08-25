@@ -20,6 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
         setHeaders: { Authorization: `Bearer ${this.userS.authToken}` },
       });
     }
+
     return next.handle(request);
   }
 }

@@ -1,6 +1,7 @@
 import {
   Injectable
 } from '@angular/core';
+import { LoggerService } from './logger.service';
 
 /*  interface for firebase error helper
     ==================================*/
@@ -39,7 +40,7 @@ export const WEAK_PASSWORD = 'auth/weak-password';
 export class FirebaseErrorService implements FirebaseErrorServiceInterface {
   readonly dictionary: Array <string> = [];
 
-  constructor() {
+  constructor(private logS: LoggerService) {
     this.setGermanTranslation();
   }
 
@@ -69,6 +70,7 @@ export class FirebaseErrorService implements FirebaseErrorServiceInterface {
   /*  expects a firebase error code, returns translation
   ======================================================*/
   public getTranslation (errorcode: string): string {
-    return this.dictionary[errorcode] ? this.dictionary[errorcode] : 'Keine Übersetzung gefunden.';
+    this.logS.logDebug(errorcode);
+    return this.dictionary[errorcode] ? this.dictionary[errorcode] : 'Keine Übersetzung gefunden!';
   };
 }

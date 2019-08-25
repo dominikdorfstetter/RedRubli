@@ -42,7 +42,6 @@ import { CheckService } from '../../services/check.service';
 export class LoginComponent {
   @Input() error: string | null;
   @Output() submitEM = new EventEmitter();
-  public countries: Observable < CountrySelect[] > ;
 
   public input = {
     username: '',
@@ -58,13 +57,7 @@ export class LoginComponent {
     private snackbarService: SnackbarService,
     private userService: UserService,
     private fes: FirebaseErrorService,
-    private countryService: CountryService,
     private checkS: CheckService) {
-    this.countries = this.getCountries$();
-  }
-
-  getCountries$(): Observable < CountrySelect[] > {
-    return this.countryService.getCountries(LSC.DE);
   }
 
   getUser(): Observable < UserAccount > {
