@@ -86,7 +86,7 @@ export interface UserAccount {
 @Injectable({
   providedIn: 'root'
 })
-export class UserService implements OnInit {
+export class UserService {
   private userAccount$: ReplaySubject<UserAccount> ;
   private user = { username: undefined, email: undefined };
   private userSub: Subscription;
@@ -98,9 +98,6 @@ export class UserService implements OnInit {
     private loggerS: LoggerService,
     private snackbarS: SnackbarService,
     private firestoreP: FirestoreProvider) {}
-
-  ngOnInit(): void {
-  }
 
   /**
    * Checks if the user is allowed to perform an action
@@ -240,7 +237,6 @@ export class UserService implements OnInit {
       this.clearUserObj();
     });
   }
-  
   
   /**
    * clear current userObj
