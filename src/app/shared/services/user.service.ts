@@ -44,6 +44,15 @@ export interface LoginCredentials {
   password: string;
 }
 
+/*  Roles
+  =======*/
+export interface Roles {
+  admin?: boolean;
+  editor?: boolean;
+  customer?: boolean;
+  sales?: boolean;
+}
+
 /*  interface: user profile data
   =============================*/
 export interface UserAccount {
@@ -60,6 +69,7 @@ export interface UserAccount {
   street: string; 
   phone: string;
   createdAT?: number;
+  roles: Roles;
   flags?: {
     registrationCompleted?: boolean,
     acceptedTerms?: boolean,
@@ -156,7 +166,7 @@ export class UserService implements OnInit {
    * @param {username, password} LoginCredentials
    */
   async logInWithUsernameAndPassword({username, password}: LoginCredentials) {
-    this.clearUserObj();
+    // this.clearUserObj();
     const email: string = await this.getEmailByUsername(username);
     if(!!email) {
       const ret = this.logInWithEmailAndPassword({username: email, password}).catch(
@@ -234,6 +244,9 @@ export class UserService implements OnInit {
             birthday: profileData.birthday.toDate(),
             zipcode: profileData.zipcode,
             countryCode: profileData.country,
+            roles: {
+              customer: true
+            },
             flags: {
               registrationCompleted: true,
               acceptedTerms: true,
@@ -271,7 +284,7 @@ export class UserService implements OnInit {
    * Google Sign in
    */
   public async googleSignin() {
-    this.clearUserObj();
+    // this.clearUserObj();
     const provider = new auth.GoogleAuthProvider();
     const credential = await this.afAuth.auth.signInWithPopup(provider);
     return !!credential ? Promise.resolve(this.updateUserData(credential.user)) : Promise.reject();

@@ -15,7 +15,7 @@ export interface QuotesInterface {
   success: Success;
   contents: Contents;
 }
- 
+
 export interface Success {
   total: number;
 }
