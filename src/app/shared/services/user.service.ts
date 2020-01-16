@@ -29,14 +29,18 @@ import {
   AngularFirestore,
   AngularFirestoreDocument
 } from '@angular/fire/firestore';
-import { auth } from  'firebase/app';
+import { auth } from 'firebase/app';
 import { LoggerService } from './logger.service';
 import { RegisterFormInput } from '../components/register/register.component';
 import { FirestoreProvider } from './firestore.provider';
 import { Serializable } from './serializable';
 
+<<<<<<< Updated upstream
 const userUrl: String = 'users';
 const tokenName = 'auth_token';
+=======
+const userUrl = 'users';
+>>>>>>> Stashed changes
 
 /*  interface: login credentials
   =============================*/
@@ -72,7 +76,7 @@ export interface UserAccount {
   countryCode: string;
   zipcode: string;
   city: string;
-  street: string; 
+  street: string;
   phone: string;
   createdAT?: number;
   roles: Roles;
@@ -93,12 +97,17 @@ export interface UserAccount {
   providedIn: 'root'
 })
 export class UserService {
+<<<<<<< Updated upstream
   private userAccount$: ReplaySubject<UserAccount> ;
   private user = { username: undefined, email: undefined };
+=======
+  private user$: ReplaySubject<UserAccount> ;
+>>>>>>> Stashed changes
   private userSub: Subscription;
   private isLogged$ = new BehaviorSubject(false);
 
   constructor(private afAuth: AngularFireAuth,
+<<<<<<< Updated upstream
     private snackbarService: SnackbarService,
     private afStore: AngularFirestore,
     private loggerS: LoggerService,
@@ -189,10 +198,17 @@ export class UserService {
     }
     return of(this.user);
   }
+=======
+              private snackbarService: SnackbarService,
+              private afStore: AngularFirestore,
+              private loggerS: LoggerService,
+              private snackbarS: SnackbarService,
+              private firestoreP: FirestoreProvider) {}
+>>>>>>> Stashed changes
 
   /**
    * login with email and password
-   * @param {username, password} LoginCredentials username/email and password
+   * @param LoginCredentials username/email and password
    */
   async logInWithEmailAndPassword({username, password}: LoginCredentials) {
     // this.clearUserObj();
@@ -212,15 +228,14 @@ export class UserService {
         return Promise.reject(err);
       });
   }
-  
+
   /**
    * Perform login with email instead of username
-   * @param {username, password} LoginCredentials
    */
   async logInWithUsernameAndPassword({username, password}: LoginCredentials) {
     // this.clearUserObj();
     const email: string = await this.getEmailByUsername(username);
-    if(!!email) {
+    if (!!email) {
       const ret = this.logInWithEmailAndPassword({username: email, password}).catch(
         err => {
           return Promise.reject(err);
@@ -242,12 +257,24 @@ export class UserService {
       this.clearUserObj();
     });
   }
+<<<<<<< Updated upstream
   
+=======
+
+
+>>>>>>> Stashed changes
   /**
    * clear current userObj
    */
   private clearUserObj(): void {
+<<<<<<< Updated upstream
     if (this.userAccount$) this.userAccount$.complete();
+=======
+    if (this.user$) {
+      this.user$.complete();
+    }
+
+>>>>>>> Stashed changes
     this.userSub.unsubscribe();
     this.userAccount$ = undefined;
   }
@@ -258,7 +285,7 @@ export class UserService {
   private updateUserData(user) {
     // Sets user data to firestore on login
     const userRef: AngularFirestoreDocument<User> = this.afStore.doc(`${userUrl}/${user.uid}`);
-    
+
     const data = {
       uid: user.uid,
       email: user.email,
@@ -268,7 +295,7 @@ export class UserService {
 
     return userRef.set(data, {
       merge: true
-    })
+    });
   }
 
   /**
@@ -283,7 +310,13 @@ export class UserService {
         this.afAuth.authState.pipe(takeUntil(unsubriber$)).subscribe(user => {
           // Sets user data to firestore on login
           const userRef: AngularFirestoreDocument<UserAccount> = this.afStore.doc(`${userUrl}/${user.uid}`);
+<<<<<<< Updated upstream
           
+=======
+
+          console.log(`${userUrl}/${user.uid}`);
+
+>>>>>>> Stashed changes
           const data: UserAccount = {
             uid: user.uid,
             email: user.email,
@@ -306,7 +339,7 @@ export class UserService {
             phone: profileData.phone,
             username: profileData.username
           };
-          
+
           // write user profile data
           return userRef.set(data).then(() => {
             // send email-verification
@@ -314,13 +347,13 @@ export class UserService {
               unsubriber$.next(true);
             });
           });
-        })
+        });
       }
     ).catch(error => {
       // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      if (errorCode == 'auth/weak-password') {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      if (errorCode === 'auth/weak-password') {
         this.snackbarS.showSnackBar('Your password is too weak!', 'Dismiss');
       } else {
         alert(errorMessage);
@@ -328,7 +361,7 @@ export class UserService {
       return Promise.reject(error);
     });
   }
-  
+
   /**
    * Google Sign in
    */
@@ -338,14 +371,14 @@ export class UserService {
     const credential = await this.afAuth.auth.signInWithPopup(provider);
     return !!credential ? Promise.resolve(this.updateUserData(credential.user)) : Promise.reject();
   }
-  
+
   /**
    * Send email verification link
    */
   public async sendEmailVerificationLink() {
     await this.afAuth.auth.currentUser.sendEmailVerification();
   }
-  
+
   /**
    * Send password reset email
    * @param passwordResetEmail the email we send the password reset mail to
@@ -373,8 +406,13 @@ export class UserService {
         }),
       ).subscribe(
         (user: UserAccount) => {
+<<<<<<< Updated upstream
           if(!!user) {
             this.userAccount$.next(user);
+=======
+          if (!!user) {
+            this.user$.next(user);
+>>>>>>> Stashed changes
             this.loggerS.logInfo('Successfully performed login.');
           } else {
             this.userAccount$.next(null);
@@ -385,12 +423,13 @@ export class UserService {
     }
     return this.userAccount$.asObservable();
   }
-  
+
   /**
    * Returns observable of UserAuth
    * @param search the value to search for
    * @param field what field are we going to search for?
    */
+<<<<<<< Updated upstream
   private getAuthBy$(search: string, field: string): Observable<UserAuth[]> {
     let usersRef$: Observable<UserAuth[]> = this.firestoreP.col$<UserAuth>(`usernameHasMail`, 
                     ref => ref.where(field, '==', search));
@@ -402,26 +441,45 @@ export class UserService {
     }));
   } //WORKS
   
+=======
+  private getUserBy$(search: string, field: string): Observable<UserAccount[]> {
+    const usersRef$: Observable<UserAccount[]> = this.firestoreP.col$<UserAccount>(`users`,
+                    ref => ref.where(field, '==', search));
+
+    return usersRef$.pipe(first());
+  }
+
+>>>>>>> Stashed changes
   /**
    * Does the username already exist?
    * @param username the username to check
    * @returns true if username already exists or false if it doesn't
    */
   public async userNameExists(username: string): Promise<boolean> {
+<<<<<<< Updated upstream
     const ret = await this.getAuthBy$(username, 'username').toPromise();
   
+=======
+    const ret = await this.getUserBy$(username, 'username').toPromise();
+
+>>>>>>> Stashed changes
     // if username exists return true; else false
     return Promise.resolve(!!ret[0] ? true : false);
   }
-  
+
   /**
    * Get an emailadress from a username
    * @param username the username to get the email-address
    * @returns emailadress that belongs to username or null
    */
   public async getEmailByUsername(username: string): Promise<string> {
+<<<<<<< Updated upstream
     const ret = await this.getAuthBy$(username, 'username').toPromise();
   
+=======
+    const ret = await this.getUserBy$(username, 'username').toPromise();
+
+>>>>>>> Stashed changes
     // if username exists return true; else false
     return Promise.resolve(!!ret[0] ? ret[0].email : null);
   }

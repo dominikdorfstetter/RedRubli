@@ -10,7 +10,7 @@ import { UserService } from '../../services/user.service';
 // interface for user input
 export interface RegisterFormInput {
   gender: string;
-  email: string; 
+  email: string;
   firstname: string;
   lastname: string;
   birthday: Moment;
@@ -55,7 +55,7 @@ export class RegisterComponent implements OnInit {
   public formatCity: boolean;
   public formatStreet: boolean;
   public formatUsername: boolean;
-  
+
   public startDate: Date;
 
   public input: RegisterFormInput = {
@@ -195,11 +195,11 @@ export class RegisterComponent implements OnInit {
       // TODO: show errors
     }
   }
-  
+
   /**
    * Display Countries
    */
   getCountries(): Observable<CountrySelect[]> {
-    return this.countryService.getCountries(LSC.EN);
+    return this.countryService.getCountries(LSC.DE);
   }
 }

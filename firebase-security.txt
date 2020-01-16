@@ -1,0 +1,22 @@
+rules_version = '2';
+
+service cloud.firestore {
+	
+  match /databases/{database}/documents {
+    function getRole(role) {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.roles[role];
+    }
+    
+    match /users/{userid} {
+    	allow read: if request.auth.uid == userid || getRole('sales') == true || getRole('admin') == true;
+      allow write: if request.auth.uid == userid || getRole('admin') == true;
+    }
+    
+    match /usernameHasMail/{userid} {
+    	allow read;
+      allow write: if request.auth.uid == userid || getRole('admin') == true;
+    }
+    
+  }
+  
+}
